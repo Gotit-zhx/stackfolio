@@ -15,3 +15,6 @@ local-server/revisions.local.json
 
 .yarn/cache/
 .yarn/install-state.gz
+
+# Private local management state (credentials, backups, audit log)
+.local-admin/

@@ -1,6 +1,6 @@
 # Stackfolio · Gotit-zhx的个人网站
 
-以 Next.js 和成熟的 Tailwind Nextjs Starter Blog 为基础的中文个人作品集。首页采用深色工程作品集风格，项目、博客与关于页面采用浅色阅读版式。项目内容按公开仓库核对；个人介绍不补写未经确认的学校、雇主或个人贡献。
+以 Next.js 和成熟的 Tailwind Nextjs Starter Blog 为基础的中文个人作品集。采用 Gotit-zhx 品牌符号，支持整站明暗切换、移动导航与克制的动效。项目内容按公开仓库核对；两个项目经本人确认均为独立编写，不补写未经确认的学校或雇主。
 
 ## 本地启动
 
@@ -40,7 +40,17 @@ PostMaker 初始登录页可创建本地工作区；AI 摘要和生成需要自�
 
 ## 内容维护
 
-- 项目详情：在 `data/projects/` 添加一篇 MDX，并填入源码地址、截图、标签和演示状态。完成部署验收后将 `demoStatus` 设为 `local`；公网部署后设为 `live`。
+可在浏览器内编辑、预览、保存和发布文章或项目，同时查看真实主机/项目容器资源。个人管理台独立运行且只绑定回环地址，访问码登录；不随公开主站部署。
+
+```bash
+node .yarn/releases/yarn-3.6.1.cjs admin
+# 自己在终端读取访问码：cat .local-admin/access-code
+# 访问 http://127.0.0.1:9090
+```
+
+完整操作、权限划分、发布生效步骤、备份恢复与将来 SSH 隧道访问见 [个人管理台说明](docs/personal-studio.md)。
+
+- 项目详情：在 `data/projects/` 添加一篇 MDX，填入源码地址、截图、个人贡献、标签与演示状态。`local` 表示尚未公网部署；`live` 必须填入 HTTPS `demoUrl`，不可用本机地址冒充在线演示。
 - 博客文章：在 `data/blog/` 添加 MDX；`draft: true` 的内容不会进入列表、详情页、RSS 或标签页。
 - 公开联系方式和站点默认地址：`data/siteMetadata.js`。
 - 主站和演示运行命令：`local-server/`。
@@ -51,7 +61,7 @@ PostMaker 初始登录页可创建本地工作区；AI 摘要和生成需要自�
 
 主仓库使用 Gitflow：`main` 只保存可发布版本，`develop` 汇总下一版本，日常工作从 `develop` 创建 `feature/*` 分支。修复线上问题使用 `hotfix/*`，准备发布时从 `develop` 创建 `release/*`，验收后合并到 `main` 和 `develop` 并打版本标签。
 
-本次本地 MVP 位于 `feature/local-mvp`。后续提交示例：
+最初 MVP 通过 `feature/local-mvp` 合入；本轮功能在 `feature/portfolio-polish` 开发。后续提交示例：
 
 ```bash
 git switch develop
@@ -62,4 +72,4 @@ git switch develop
 git merge --no-ff feature/<topic>
 ```
 
-合并前运行 `yarn lint`、`yarn typecheck`、`yarn build`，并用 `./local-server/start.sh all` 验收主站和两个演示。远程仓库配置后，再按团队约定推送 `develop` 和发布分支；当前仓库尚未配置 remote。
+合并前运行 lint、typecheck、build、test:admin、test:content，并验收主站与演示。无需全局 Yarn，可用 `node .yarn/releases/yarn-3.6.1.cjs <命令>`。远程仓库配置后，再按约定推送 develop 和发布分支；当前仓库尚未配置 remote。

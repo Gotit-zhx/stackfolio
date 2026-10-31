@@ -9,7 +9,7 @@
       <webMaster>207259705@qq.com (Gotit-zhx)</webMaster>
       <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
       <atom:link href="http://localhost:3000/tags/自托管/feed.xml" rel="self" type="application/rss+xml"/>
-      
+
   <item>
     <guid>http://localhost:3000/blog/building-stackfolio</guid>
     <title>从本地开始：个人网站与项目演示的部署设计</title>
@@ -18,6 +18,16 @@
     <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
     <author>207259705@qq.com (Gotit-zhx)</author>
     <category>工程记录</category><category>自托管</category><category>Docker Compose</category>
+  </item>
+
+  <item>
+    <guid>http://localhost:3000/blog/isolating-demo-environments</guid>
+    <title>给项目演示建立隔离的本地运行环境</title>
+    <link>http://localhost:3000/blog/isolating-demo-environments</link>
+    <description>把个人网站、PostMaker 和百草园放进独立服务与数据卷，再用统一脚本管理启动、日志和停止。</description>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
+    <author>207259705@qq.com (Gotit-zhx)</author>
+    <category>Docker Compose</category><category>自托管</category><category>演示环境</category>
   </item>
 
     </channel>

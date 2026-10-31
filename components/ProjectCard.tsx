@@ -1,8 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Project } from 'contentlayer/generated'
+import { ArrowUpRight } from 'lucide-react'
 
 export default function ProjectCard({ project, index = 0 }: { project: Project; index?: number }) {
+  const statusLabel =
+    project.demoStatus === 'live'
+      ? '在线演示'
+      : project.demoStatus === 'local'
+        ? '本地预览 · 尚未上线'
+        : '演示准备中'
   return (
     <article className={`project-card project-${project.slug}`}>
       <Link
@@ -29,7 +36,7 @@ export default function ProjectCard({ project, index = 0 }: { project: Project; 
           <p className="eyebrow">{project.subtitle}</p>
           <h3>
             <Link href={`/projects/${project.slug}`}>
-              {project.title} <span>↗</span>
+              {project.title} <ArrowUpRight size={19} strokeWidth={1.6} />
             </Link>
           </h3>
         </div>
@@ -39,8 +46,9 @@ export default function ProjectCard({ project, index = 0 }: { project: Project; 
             <span key={t}>{t}</span>
           ))}
         </div>
+        <span className={`status-badge status-${project.demoStatus}`}>{statusLabel}</span>
         <Link href={`/projects/${project.slug}`} className="text-link">
-          阅读项目案例 <span>→</span>
+          阅读项目案例 <ArrowUpRight size={15} strokeWidth={1.7} />
         </Link>
       </div>
     </article>

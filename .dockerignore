@@ -7,3 +7,6 @@ local-server
 .yarn/cache
 .yarn/install-state.gz
 *.tsbuildinfo
+
+.local-admin
+local-admin

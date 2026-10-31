@@ -1,7 +1,18 @@
 import Link from 'next/link'
+import Github from '@/components/GitHubIcon'
 import { allBlogs, allProjects } from 'contentlayer/generated'
 import ProjectCard from '@/components/ProjectCard'
 import siteMetadata from '@/data/siteMetadata'
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Bot,
+  Code2,
+  Command,
+  Mail,
+  Search,
+  Workflow,
+} from 'lucide-react'
 
 export default function Home() {
   const projects = allProjects.filter((p) => !p.draft).sort((a, b) => a.order - b.order)
@@ -30,7 +41,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Link href="#selected-work" className="button primary">
-              探索我的项目 <span>↘</span>
+              探索我的项目 <ArrowDownRight size={18} />
             </Link>
             <a
               href={siteMetadata.github}
@@ -38,7 +49,7 @@ export default function Home() {
               rel="noreferrer"
               className="button subtle"
             >
-              GitHub <span>↗</span>
+              <Github size={16} /> GitHub <ArrowUpRight size={16} />
             </a>
           </div>
           <div className="hero-footnote">
@@ -49,32 +60,45 @@ export default function Home() {
         <div className="system-map" aria-label="工程实践：连接采集、AI 生成、人工审核与产品交付">
           <div className="map-heading">
             <span>WORKFLOW / 01</span>
-            <span className="map-live">● BUILDING</span>
+            <span className="map-live">
+              <span className="status-dot" /> BUILDING
+            </span>
           </div>
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
           <div className="map-core">
-            <span>zhx</span>
+            <span className="map-monogram">
+              G<span>/</span>
+            </span>
             <small>IDEA → PRODUCT</small>
           </div>
           <div className="map-node node-input">
             <b>01 / INPUT</b>
-            <span>发现问题</span>
+            <span>
+              <Search size={15} /> 发现问题
+            </span>
             <small>Research & Sources</small>
           </div>
           <div className="map-node node-ai">
             <b>02 / INTELLIGENCE</b>
-            <span>连接 AI 能力</span>
+            <span>
+              <Bot size={15} /> 连接 AI 能力
+            </span>
             <small>Models & Workflows</small>
           </div>
           <div className="map-node node-ship">
             <b>03 / DELIVERY</b>
-            <span>构建真实体验</span>
+            <span>
+              <Workflow size={15} /> 构建真实体验
+            </span>
             <small>Interface & Deployment</small>
           </div>
           <div className="map-footer">
             <span>Python / TypeScript</span>
-            <span>⌘ ↵</span>
+            <span>
+              <Command size={12} />
+              <Code2 size={13} />
+            </span>
           </div>
         </div>
       </section>
@@ -85,7 +109,7 @@ export default function Home() {
             <h2>用作品，回答问题。</h2>
           </div>
           <Link href="/projects" className="text-link">
-            全部项目 ↗
+            全部项目 <ArrowUpRight size={15} />
           </Link>
         </div>
         <div className="project-grid">
@@ -124,7 +148,7 @@ export default function Home() {
             <h2>边做，边记录。</h2>
           </div>
           <Link href="/blog" className="text-link">
-            全部笔记 ↗
+            全部笔记 <ArrowUpRight size={15} />
           </Link>
         </div>
         {posts.length ? (
@@ -135,7 +159,7 @@ export default function Home() {
                 <h3>{p.title}</h3>
                 <p>{p.summary}</p>
               </div>
-              <span>↗</span>
+              <ArrowUpRight size={18} />
             </Link>
           ))
         ) : (
@@ -150,9 +174,11 @@ export default function Home() {
           <span>一起把它做出来。</span>
         </h2>
         <div className="contact-links">
-          <a href={`mailto:${siteMetadata.email}`}>{siteMetadata.email} ↗</a>
+          <a href={`mailto:${siteMetadata.email}`}>
+            <Mail size={16} /> {siteMetadata.email} <ArrowUpRight size={14} />
+          </a>
           <a href={siteMetadata.github} target="_blank" rel="noreferrer">
-            GitHub / Gotit-zhx ↗
+            <Github size={16} /> GitHub / Gotit-zhx <ArrowUpRight size={14} />
           </a>
         </div>
       </section>
