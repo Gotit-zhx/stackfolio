@@ -1,0 +1,7 @@
+services:
+  postmaker:
+    ports: !override
+      - "${BIND_ADDRESS:-127.0.0.1}:${POSTMAKER_PORT:-8787}:8787"
+  dataradar:
+    environment:
+      ALLOWED_ORIGINS: ${NEXT_PUBLIC_POSTMAKER_URL:-http://localhost:8787}

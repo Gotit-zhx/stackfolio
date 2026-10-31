@@ -1,0 +1,22 @@
+name: stackfolio-local
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: local-server/site.Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_POSTMAKER_URL: ${NEXT_PUBLIC_POSTMAKER_URL:-http://localhost:8787}
+        NEXT_PUBLIC_BAICAOYUAN_URL: ${NEXT_PUBLIC_BAICAOYUAN_URL:-http://localhost:8088}
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_POSTMAKER_URL: ${NEXT_PUBLIC_POSTMAKER_URL:-http://localhost:8787}
+      NEXT_PUBLIC_BAICAOYUAN_URL: ${NEXT_PUBLIC_BAICAOYUAN_URL:-http://localhost:8088}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${SITE_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
