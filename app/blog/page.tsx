@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
 export const metadata = genPageMetadata({ title: '工程笔记' })
@@ -26,7 +27,7 @@ export default function Blog() {
               <h2>{p.title}</h2>
               <p>{p.summary}</p>
             </div>
-            <span>↗</span>
+            <ArrowUpRight size={19} />
           </Link>
         ))
       ) : (

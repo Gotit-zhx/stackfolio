@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>Gotit-zhx · AI 应用与工程实践</title>
+      <link>http://localhost:3000/blog</link>
+      <description>将 AI 想法变成可体验的产品。Gotit-zhx的项目、工程笔记与个人网站。</description>
+      <language>zh-CN</language>
+      <managingEditor>207259705@qq.com (Gotit-zhx)</managingEditor>
+      <webMaster>207259705@qq.com (Gotit-zhx)</webMaster>
+      <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
+      <atom:link href="http://localhost:3000/tags/nextjs/feed.xml" rel="self" type="application/rss+xml"/>
+
+  <item>
+    <guid>http://localhost:3000/blog/publishing-with-mdx</guid>
+    <title>用 MDX 管理个人网站的内容发布</title>
+    <link>http://localhost:3000/blog/publishing-with-mdx</link>
+    <description>在个人网站早期，用仓库里的 MDX 文件维护文章与项目，可以保留版本记录并减少额外服务。</description>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
+    <author>207259705@qq.com (Gotit-zhx)</author>
+    <category>MDX</category><category>Next.js</category><category>内容管理</category>
+  </item>
+
+    </channel>
+  </rss>

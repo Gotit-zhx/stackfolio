@@ -161,6 +161,10 @@ export const Project = defineDocumentType(() => ({
     repository: { type: 'string', required: true },
     cover: { type: 'string', required: true },
     coverAlt: { type: 'string', required: true },
+    screenshots: { type: 'list', of: { type: 'string' }, default: [] },
+    contributions: { type: 'list', of: { type: 'string' }, default: [] },
+    contributionNote: { type: 'string' },
+    demoUrl: { type: 'string' },
     demoStatus: {
       type: 'enum',
       options: ['not-deployed', 'local', 'live'],
@@ -205,7 +209,7 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    createTagCount(allBlogs)
+    await createTagCount(allBlogs)
     createSearchIndex(allBlogs)
   },
 })

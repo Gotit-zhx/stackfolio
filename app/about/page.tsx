@@ -13,7 +13,7 @@ export default function About() {
       </div>
       <div className="about-grid">
         <div className="about-monogram" aria-hidden="true">
-          zhx<span>BUILD / LEARN / REPEAT</span>
+          G/<span>GOTIT-ZHX / BUILD, LEARN, REPEAT</span>
         </div>
         <div className="prose prose-lg">
           <h2>把技术放进真实流程里</h2>
@@ -23,7 +23,7 @@ export default function About() {
           </p>
           <p>
             这里整理了我的公开项目与工程记录。PostMaker 探索 AI
-            内容生产工作流；百草园展示图文社区的完整产品链路。每个项目都提供独立详情页和源码入口。
+            内容生产工作流；百草园展示图文社区的完整产品链路。两个项目均由我独立开发，每个项目都提供独立详情页、贡献说明和源码入口。
           </p>
           <h2>正在关注</h2>
           <ul>
