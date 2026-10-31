@@ -39,7 +39,7 @@ docker compose -p stackfolio-baicaoyuan \
 ./local-server/start.sh site
 ```
 
-云服务器上建议使用独立域名或子域名分别指向主站、PostMaker 和百草园，再把 `BIND_ADDRESS`、端口和 `NEXT_PUBLIC_*` 改为实际值。首次公网部署前还要配置 HTTPS、AI 模型密钥、邮件服务、备份和资源限制；当前配置默认仅绑定本机地址，百草园注册关闭。
+云服务器上建议使用独立域名或子域名分别指向主站、PostMaker 和百草园。`BIND_ADDRESS=127.0.0.1` 继续保持回环绑定，调整 `NEXT_PUBLIC_*` 为实际 HTTPS 域名，由公网反向代理连接本机端口。首次公网部署前还要配置 HTTPS、应用代理信任与安全 Cookie、AI 模型额度、邮件服务、备份和资源限制；当前配置默认仅绑定本机地址，百草园注册关闭。分阶段采购、备案及配置清单见 [云服务器与部署规划](../docs/cloud-deployment-plan.md)，现有配置不是直接公网部署模板。
 
 ## 目录
 

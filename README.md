@@ -61,7 +61,7 @@ node .yarn/releases/yarn-3.6.1.cjs admin
 
 主仓库使用 Gitflow：`main` 只保存可发布版本，`develop` 汇总下一版本，日常工作从 `develop` 创建 `feature/*` 分支。修复线上问题使用 `hotfix/*`，准备发布时从 `develop` 创建 `release/*`，验收后合并到 `main` 和 `develop` 并打版本标签。
 
-最初 MVP 通过 `feature/local-mvp` 合入；本轮功能在 `feature/portfolio-polish` 开发。后续提交示例：
+最初 MVP 通过 `feature/local-mvp` 合入；主题、内容与个人管理台通过 `feature/portfolio-polish` 开发并合入 `develop`。后续提交示例：
 
 ```bash
 git switch develop
@@ -72,4 +72,10 @@ git switch develop
 git merge --no-ff feature/<topic>
 ```
 
-合并前运行 lint、typecheck、build、test:admin、test:content，并验收主站与演示。无需全局 Yarn，可用 `node .yarn/releases/yarn-3.6.1.cjs <命令>`。远程仓库配置后，再按约定推送 develop 和发布分支；当前仓库尚未配置 remote。
+功能合并前运行 lint、typecheck、build、test:admin、test:content，并验收主站与演示。无需全局 Yarn，可用 `node .yarn/releases/yarn-3.6.1.cjs <命令>`；纯文档变更检查格式、链接和 Git 差异即可。
+
+远程仓库为 [Gotit-zhx/stackfolio](https://github.com/Gotit-zhx/stackfolio)，目前私有；`origin` 已配置，`main` 和 `develop` 已推送，默认分支为 `develop`。完成集成后执行 `git push origin develop`；生产发布另走 `release/*`，不因日常上传直接更新 `main`。完整流程见 [Gitflow 说明](docs/gitflow.md)。
+
+## 云服务器规划
+
+主要面向中国大陆访客，服务器月均预算不超过 50 元，当前尚无域名，也未购买服务器。候选配置、官方价格核对、备案安排及三套应用的统一部署路径见 [云服务器与部署规划](docs/cloud-deployment-plan.md)。
