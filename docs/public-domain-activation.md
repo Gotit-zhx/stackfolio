@@ -86,10 +86,11 @@ DNS 服务商：
 1. 将 `develop` 中的公网 Caddy 配置同步到 `/etc/caddy/Caddyfile`。
 2. 先运行 `caddy validate`，通过后再 reload。
 3. 让 Caddy 根据域名反向代理主站、PostMaker 和百草园。
-4. 在本机按真实 HTTPS 地址重建 `linux/amd64` 主站镜像。
-5. 通过 SSH 传输镜像，服务器只加载镜像，不在低配服务器构建。
-6. 依次验证 HTTPS、项目演示、健康检查、Cookie、CSRF、代理头和资源余量。
-7. 验收通过后再把项目详情中的演示状态从 `local` 改为 `live`，并按 Gitflow 创建发布版本。
+4. 运行 `deploy/prepare-public-env.sh`，备份并更新应用的 HTTPS、Cookie 和允许域名配置。
+5. 在本机按真实 HTTPS 地址重建 `linux/amd64` 主站镜像。
+6. 通过 SSH 传输镜像，服务器只加载镜像，不在低配服务器构建。
+7. 依次验证 HTTPS、项目演示、健康检查、Cookie、CSRF、代理头和资源余量。
+8. 验收通过后再把项目详情中的演示状态从 `local` 改为 `live`，并按 Gitflow 创建发布版本。
 
 管理台始终保留在 `127.0.0.1:9090`，不会被公网 Caddy 代理。
 
@@ -103,6 +104,15 @@ PUBLIC_RELEASE_CONFIRMED=1 sudo -E ./deploy/activate-public-caddy.sh
 ```
 
 只有在 ICP 备案已通过、DNS 已生效、阿里云安全组已放行 TCP 80/443 后才执行。脚本不配置管理台公网入口，也不改变应用回环绑定。
+
+应用环境准备脚本同样要求显式确认：
+
+```bash
+cd /srv/stackfolio
+PUBLIC_RELEASE_CONFIRMED=1 ./deploy/prepare-public-env.sh
+```
+
+它只修改公开 URL、安全 Cookie、百草园允许域名和低资源 profile，并在每个环境文件旁生成带时间戳的备份；不会生成、打印或覆盖应用 secret。
 
 ## 故障回退
 
