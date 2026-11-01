@@ -41,4 +41,19 @@ ssh -N \
   <账号>@<服务器地址>
 ```
 
-当前验收提交为 `57e8b3e`。四项应用和 PostMaker 的 Redis、RSSHub、DataRadar 均已通过健康检查；低配实例可用内存应持续观察，出现明显下降时先停止演示服务再排查，不在服务器执行构建或大规模清理。
+当前验收提交为 `6cc2097`。四项应用和 PostMaker 的 Redis、RSSHub、DataRadar 均已通过健康检查；低配实例可用内存应持续观察，出现明显下降时先停止演示服务再排查，不在服务器执行构建或大规模清理。
+
+### 受限验收的 SSH 隧道构建
+
+受限验收阶段，主站镜像中的演示链接必须指向本机 SSH 隧道端口，而不是 `local-server/.env.example` 中供本地开发使用的 `8787` 和 `8088`。在 Mac 上构建 `linux/amd64` 镜像时使用临时环境覆盖：
+
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:23000 \
+NEXT_PUBLIC_POSTMAKER_URL=http://localhost:28787 \
+NEXT_PUBLIC_BAICAOYUAN_URL=http://localhost:28088 \
+  docker compose -p stackfolio-site \
+  --env-file local-server/.env \
+  -f local-server/compose.yaml build --platform linux/amd64 site
+```
+
+随后将构建好的镜像传到服务器并依次启动；服务器只加载镜像和配置，不执行 `docker build`。建立上面的 SSH 隧道后，主站详情页中的演示链接才可从本机打开。正式域名和 HTTPS 上线时，应把这三个 `NEXT_PUBLIC_*` 值改为真实 HTTPS 地址并重新构建主站。
