@@ -1,0 +1,52 @@
+---
+title: PostMaker · AI 内容生产工作台
+subtitle: AI CONTENT WORKFLOW
+category: AI 应用
+summary: 将信息采集、素材检索、persona 草稿生成与人工审核，连接成可追溯的内容工作流。
+order: 1
+tags: ['Python', 'FastAPI', 'React', 'LiteLLM', 'SQLite', 'Docker Compose']
+repository: https://github.com/Gotit-zhx/PostMaker
+cover: /projects/postmaker/workbench-materials.jpg
+coverAlt: PostMaker 素材发现工作台，展示示例素材列表与来源管理
+screenshots:
+  ['/projects/postmaker/workbench-sources.jpg', '/projects/postmaker/workbench-drafts.jpg']
+contributions:
+  - '独立设计并实现 DataRadar 信息采集、来源管理、全文提取、检索与可选 AI 摘要。'
+  - '独立实现 PostMaker 的 persona 配置、草稿生成、人工编辑审核、修订记录与多格式导出。'
+  - '完成 React 工作台、FastAPI 接口和 LiteLLM 模型接入，并提供容器化部署与持久化配置。'
+contributionNote: '本项目由我独立编写；以上职责范围经本人确认。功能与实现边界按当前公开仓库说明。'
+demoUrl: https://postmaker.gotit-zhx.top
+demoStatus: live
+draft: false
+---
+
+## 从信息发现，到人工审核
+
+内容创作需要在来源、素材、草稿和审核之间反复切换。PostMaker 与 DataRadar 将这些环节组合成一个本地优先的工作台，保留素材来源与人工判断。
+
+工作流由 DataRadar 采集 RSS 与网页，整理全文和素材，再由 PostMaker 根据选定素材与 persona 生成草稿，经过人工编辑、审核与修订后，导出 Markdown、HTML 或适配平台的文稿。
+
+## 两个模块，各自负责清晰的环节
+
+- **DataRadar**：来源管理、内容采集、全文提取、检索，以及可选的 AI 摘要与标签。
+- **PostMaker**：persona 配置、草稿生成、编辑审核、修订记录与多格式导出。
+- **Web 工作台**：React + Vite 提供交互，FastAPI 提供页面与接口；模块之间通过 API 连接。
+- **模型接入**：通过 LiteLLM 配置模型。基础采集、检索和人工编辑不依赖模型凭据，摘要与生成则需要单独配置。
+
+## 工程上的取舍
+
+信息整理与内容生成分开，便于定位采集、模型与审核环节中的问题。生成后保留人工审核，来源与修订成为检查最终内容依据的一部分。
+
+公开工作区部署使用 SQLite，PostMaker 作为用户入口，DataRadar 通过内部网络提供接口。容器配置将数据放进独立持久化卷。
+
+## 当前边界
+
+这是单机 MVP，不等同于成熟的多租户 SaaS。仓库说明 PostgreSQL 尚未加入 workspace 隔离，采集任务状态保存在进程内，团队权限与共享队列仍有迭代空间。
+
+平台适配用于生成可复制的文稿，不会自动登录公众号、知乎或小红书发布。网站不展示未经验证的用户规模、生成质量或性能指标。
+
+## 如何体验
+
+从页面顶部打开在线演示。目前入口显示工作台登录页，需要已有的有效工作区账号；请勿在演示环境提交个人敏感数据。AI 生成和摘要依赖单独配置的模型服务，未配置时可用功能以页面实际状态为准。
+
+本项目由我独立编写。案例根据当前公开代码与 README 整理，不使用未经验证的用户规模或性能数字。

@@ -1,0 +1,20 @@
+node_modules/
+.next/
+.contentlayer/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+local-server/apps/
+local-server/site-starter/
+local-server/.env*
+!local-server/.env.example
+local-server/.secrets/
+local-server/revisions.local.json
+.DS_Store
+
+.yarn/cache/
+.yarn/install-state.gz
+
+# Private local management state (credentials, backups, audit log)
+.local-admin/

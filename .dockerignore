@@ -1,0 +1,11 @@
+.git
+.next
+node_modules
+.contentlayer
+local-server
+.env*
+.yarn/cache
+.yarn/install-state.gz
+*.tsbuildinfo
+
+.local-admin

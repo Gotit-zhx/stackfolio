@@ -1,0 +1,20 @@
+# 公网发布前的 Caddy 配置模板。
+# 只有在域名已完成 ICP 备案、DNS 已指向服务器且完成发布验收后才启用。
+# 管理台不配置公网域名，继续通过 SSH 隧道访问 127.0.0.1:9090。
+
+gotit-zhx.top, www.gotit-zhx.top {
+  encode gzip zstd
+  reverse_proxy 127.0.0.1:3000
+}
+
+postmaker.gotit-zhx.top {
+  encode gzip zstd
+  reverse_proxy 127.0.0.1:18787
+}
+
+baicaoyuan.gotit-zhx.top {
+  encode gzip zstd
+  reverse_proxy 127.0.0.1:18088
+}
+
+# 不要添加 admin.gotit-zhx.top，也不要将 9090、Redis、数据库或 Docker socket 代理到公网。

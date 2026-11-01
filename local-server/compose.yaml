@@ -1,0 +1,49 @@
+name: stackfolio-local
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: local-server/site.Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_POSTMAKER_URL: ${NEXT_PUBLIC_POSTMAKER_URL:-http://localhost:8787}
+        NEXT_PUBLIC_BAICAOYUAN_URL: ${NEXT_PUBLIC_BAICAOYUAN_URL:-http://localhost:8088}
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_POSTMAKER_URL: ${NEXT_PUBLIC_POSTMAKER_URL:-http://localhost:8787}
+      NEXT_PUBLIC_BAICAOYUAN_URL: ${NEXT_PUBLIC_BAICAOYUAN_URL:-http://localhost:8088}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${SITE_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  admin:
+    build:
+      context: ..
+      dockerfile: deploy/admin.Dockerfile
+    restart: unless-stopped
+    environment:
+      ADMIN_HOST: 0.0.0.0
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    group_add:
+      - "${DOCKER_GID:-999}"
+    ports:
+      - "${ADMIN_BIND_ADDRESS:-127.0.0.1}:${ADMIN_PORT:-9090}:9090"
+    volumes:
+      - ../data:/app/data
+      - ../public/projects:/app/public/projects
+      - ../.local-admin:/app/.local-admin
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:9090/api/session').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5

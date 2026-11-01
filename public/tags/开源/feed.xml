@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>Gotit-zhx · AI 应用与工程实践</title>
+      <link>https://gotit-zhx.top/blog</link>
+      <description>将 AI 想法变成可体验的产品。Gotit-zhx的项目、工程笔记与个人网站。</description>
+      <language>zh-CN</language>
+      <managingEditor>207259705@qq.com (Gotit-zhx)</managingEditor>
+      <webMaster>207259705@qq.com (Gotit-zhx)</webMaster>
+      <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gotit-zhx.top/tags/开源/feed.xml" rel="self" type="application/rss+xml"/>
+
+  <item>
+    <guid>https://gotit-zhx.top/blog/project-case-studies</guid>
+    <title>项目案例应该写清楚实现边界</title>
+    <link>https://gotit-zhx.top/blog/project-case-studies</link>
+    <description>从公开仓库整理项目时，描述数据流、模块分工与已知限制，比泛化的成果形容词更有帮助。</description>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
+    <author>207259705@qq.com (Gotit-zhx)</author>
+    <category>作品集</category><category>技术写作</category><category>开源</category>
+  </item>
+
+    </channel>
+  </rss>

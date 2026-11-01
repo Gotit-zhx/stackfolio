@@ -1,0 +1,54 @@
+---
+title: 百草园 · 图文社区
+subtitle: FULL-STACK COMMUNITY
+category: 全栈产品
+summary: 用完整的发现、创作与互动流程，连接 Vue 界面、Django API 和社区治理。
+order: 2
+tags: ['Vue 3', 'TypeScript', 'Django', 'SQLite', 'Docker Compose']
+repository: https://github.com/Gotit-zhx/Text-Image-Platform
+cover: /projects/baicaoyuan/discover-desktop.jpg
+coverAlt: 百草园桌面发现页，使用隔离的本地演示内容展示图文社区
+screenshots:
+  [
+    '/projects/baicaoyuan/post-detail-desktop.jpg',
+    '/projects/baicaoyuan/publish-desktop.jpg',
+    '/projects/baicaoyuan/discover-mobile.jpg',
+  ]
+contributions:
+  - '独立完成 Vue 3 / TypeScript 前端，覆盖发现、创作、搜索、个人主页与消息通知等产品流程。'
+  - '独立实现 Django 后端的账号、内容、媒体、社交互动、举报申诉与治理模块。'
+  - '实现推荐接入与回退相关代码，并完成 Docker Compose、Caddy、健康检查及备份配置。'
+contributionNote: '本项目由我独立编写；以上职责范围经本人确认。推荐实现的存在不等于生产级效果已经验收。'
+demoUrl: https://baicaoyuan.gotit-zhx.top
+demoStatus: live
+draft: false
+---
+
+## 一个可以走完整流程的图文社区
+
+百草园将内容发现、创作、互动与管理组织为完整的 Web 产品。用户从发现页和搜索进入图文详情，再进行评论、点赞、收藏与关注；创作者可以编辑富文本、上传图片、维护标签与草稿。
+
+## 界面、API 与数据协作
+
+- **前端**：Vue 3 与 TypeScript，覆盖发现、详情、创作、个人主页和通知等页面。
+- **后端**：Django 负责账号、内容、社交互动、媒体与治理模块。
+- **社区治理**：包含举报、申诉、管理角色与审计记录。
+- **自托管交付**：仓库提供 Docker Compose、Caddy、健康检查和备份脚本。本地演示使用独立 SQLite 数据卷。
+
+## 推荐能力的实际边界
+
+仓库包含 ALS 离线训练与推荐接入代码，也包含基于互动、关注的规则推荐和热门回退。README 对当前在线信息流采用热度规则的保守说明。
+
+因此，这里展示的是推荐链路的工程实践，不宣称已经部署生产级个性化推荐，也不使用未经核实的准确率或效果提升数字。
+
+## 从开发到可运行的演示
+
+独立容器运行 Django，Caddy 托管前端并代理 API，数据库、媒体和静态资源分别持久化。注册默认关闭，首次体验可以先浏览内容；需要登录操作时，由部署者在本地创建演示账号。
+
+界面截图来自公开仓库中的隔离示例数据，不代表真实用户、线上活跃度或实体手机验收。素材来源与许可见 [仓库素材说明](https://github.com/Gotit-zhx/Text-Image-Platform/blob/master/docs/demo-media-sources.md)。
+
+## 后续迭代
+
+继续核对真实信息流的推荐调用、模型加载与回退行为，并以可复现的实验补充算法说明。公网演示保持注册关闭；登录、发布等写入操作是否可用，以当前部署配置为准。
+
+本项目由我独立编写。案例根据当前公开代码与 README 整理，不将推荐代码的存在表述为生产级效果验证。

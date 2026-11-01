@@ -1,0 +1,38 @@
+---
+title: Stackfolio · 个人作品集与发布工作台
+subtitle: PERSONAL PORTFOLIO PLATFORM
+category: 全栈工程
+summary: 将个人介绍、项目案例、博客发布和受限资源监控组织在一个可自托管的 Next.js 工作台中。
+order: 0
+tags: ['Next.js', 'TypeScript', 'MDX', 'Docker Compose', 'Caddy', 'Gitflow']
+repository: https://github.com/Gotit-zhx/stackfolio
+cover: /static/images/twitter-card.png
+coverAlt: Stackfolio 个人作品集首页，展示项目案例与博客入口
+screenshots: []
+contributions:
+  - '独立设计并实现中文个人介绍、项目详情、在线演示入口、博客和 RSS 内容体系。'
+  - '独立实现 MDX 内容管理台，支持草稿、发布、版本冲突检测、备份和项目截图上传。'
+  - '完成三套 Compose 应用编排、Caddy 公网入口、SSH 隧道管理台访问和主机资源监控。'
+contributionNote: '本项目由我独立编写；网站、管理台和部署脚本均以公开仓库当前实现为准。'
+demoUrl: https://gotit-zhx.top
+demoStatus: live
+draft: false
+---
+
+## 一个可以持续发布的个人网站
+
+Stackfolio 把个人介绍、项目案例和技术文章放在同一套内容模型中。项目详情页可以同时链接源码仓库和独立在线演示，博客内容使用 MDX 编写，发布前可以在管理台预览和保存草稿。
+
+## 从本地到云服务器
+
+- **网站**：Next.js、TypeScript、Tailwind CSS 和 Contentlayer，生成适合小型云主机的 standalone 镜像。
+- **内容**：项目和文章均由版本化的 MDX 文件驱动，保留 Gitflow 审阅和可回退的发布路径。
+- **运行**：Stackfolio、PostMaker、百草园分别使用独立 Docker Compose project，数据卷相互隔离。
+- **入口**：Caddy 负责公网 HTTP/HTTPS 反向代理；没有域名时也可以先用服务器 IP 做受限验收。
+- **管理**：个人管理台只监听服务器回环地址，通过 SSH 隧道访问，并用访问码和会话 Cookie 保护。
+
+## 安全边界
+
+资源监控仅对登录后的本人管理台提供，不在公开站点展示 CPU、内存、磁盘、容器列表或环境变量。公网演示关闭注册和未审核的写入入口，应用密钥、管理台访问码与数据备份不进入 Git。
+
+本项目由我独立编写。案例描述依据当前公开仓库和可复现的部署配置，不使用未经验证的用户规模或性能数字。
