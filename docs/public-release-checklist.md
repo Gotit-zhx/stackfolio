@@ -1,6 +1,6 @@
 # gotit-zhx.top 公网发布清单
 
-这份清单记录 `gotit-zhx.top` 首次公网发布验收。具体拓扑与回退方式见 [公网访问操作手册](public-domain-activation.md)。
+这份清单记录 `gotit-zhx.top` 首次公网发布验收。具体拓扑与首发回退方式见 [公网访问操作手册](public-domain-activation.md)；日常维护和后续低负载发布见 [公网访问与发布运行手册](public-access-runbook.md)。
 
 需要手动操作的详细步骤见 [公网访问操作手册](public-domain-activation.md)。
 
@@ -51,7 +51,7 @@
 
 ## 发布后复核
 
-1. 按 Gitflow 将本次 `release/v0.1.0` 合入 `main`、`develop` 并创建版本 tag。
+1. Gitflow 发布已完成：`v0.1.0` 和后续修正文案版本 `v0.1.1` 已推送到远程仓库。
 2. 观察容器健康状态、服务器可用内存和 Caddy ACME 日志。
 3. 定期备份应用数据及密钥，离线保存并演练恢复。
 

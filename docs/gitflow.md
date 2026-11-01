@@ -53,6 +53,6 @@ node .yarn/releases/yarn-3.6.1.cjs test:admin
 node .yarn/releases/yarn-3.6.1.cjs test:content
 ```
 
-阿里云公网首发目前在 `release/v0.1.0` 验收：ICP 备案已通过，Caddy HTTPS 和三个应用入口已启用，主站镜像由 Mac 构建后传输。验收通过后将 release 合并至 `main` 和 `develop` 并创建 tag。个人管理台保存内容后也应在 feature 分支提交，再合入 develop；不会自动提交和推送。
+阿里云公网首发已在 `v0.1.0` 发布；后续 PostMaker 体验文案修正以 `v0.1.1` 发布。ICP 备案已通过，Caddy HTTPS 和三个应用入口已启用，主站镜像由 Mac 构建后传输。个人管理台保存内容后也应在 feature 分支提交，再合入 develop；不会自动提交和推送。
 
 纯文档变更检查 Markdown 格式、引用路径及 `git diff --check`，不需要重建未变更的应用。云服务器选型与发布步骤见 [部署规划](cloud-deployment-plan.md)。
