@@ -9,7 +9,7 @@
 - 尚无域名，希望先了解备案流程与时间，再决定购买。
 - 项目仓库：<https://github.com/Gotit-zhx/stackfolio>，公开；默认分支 `develop`。`main` 保留可发布基线，不因日常上传而直接更新。
 - 阿里云服务器：Ubuntu 24.04，约 1.6 GiB 内存、40 GiB 磁盘；已创建约 2 GiB swap。项目目录 `/srv/stackfolio`。服务器地址不写入公开仓库，连接时从本机安全配置读取。该实例的实际规格低于建议的 4 GiB 起步配置，需顺序启动并观察资源余量。
-- 当前仅计划通过 SSH 隧道访问本机回环服务。未确认服务健康前，不视为已完成部署；不开放网站或演示公网入口。
+- 当前通过 SSH 隧道访问本机回环服务，已完成主站、两个演示和管理台的受限健康验收；仍不开放网站或演示公网入口。
 - 两个演示项目源码由本人独立编写；其运行时克隆仍分别由各自仓库管理。
 - 个人管理台仅本人使用，继续通过回环地址和 SSH 隧道访问。
 
@@ -78,7 +78,7 @@
 
 建议公网 Caddy 作为宿主机服务运行，才能直接访问以上宿主机回环端口；如果以后改成 Caddy 容器，必须另行配置共享网络和服务名，不能照抄 `127.0.0.1` 作为跨容器地址。
 
-保留三套独立 Compose project：`stackfolio-site`、`stackfolio-postmaker`、`stackfolio-baicaoyuan`，统一用根仓库脚本维护，数据卷继续隔离。`local-server/` 名称暂时保留，将来可在服务器 `/srv/stackfolio/` 中复用；当前脚本仍是本地配置，不能原样当作已完成的云部署方案。
+保留三套独立 Compose project：`stackfolio-site`、`stackfolio-postmaker`、`stackfolio-baicaoyuan`，统一用根仓库脚本维护，数据卷继续隔离。`local-server/` 名称暂时保留，已在服务器 `/srv/stackfolio/` 中复用；当前配置完成的是无域名、无备案的受限部署，公网 HTTPS 仍需后续适配。
 
 ### 云部署前的配置适配
 
