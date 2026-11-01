@@ -48,6 +48,33 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           </a>
         </div>
         <DemoStatus status={p.demoStatus} url={demoUrl} slug={p.slug} repository={p.repository} />
+        {p.slug === 'baicaoyuan' ? (
+          <section className="demo-credentials" aria-labelledby="demo-credentials-title">
+            <div>
+              <p className="demo-credentials-label" id="demo-credentials-title">
+                游客演示账号
+              </p>
+              <p className="demo-credentials-note">
+                打开百草园演示后，可使用以下账号体验登录后的内容、关注和收藏功能。
+              </p>
+            </div>
+            <dl>
+              <div>
+                <dt>账号</dt>
+                <dd>
+                  <code>demo_muyu</code>
+                </dd>
+              </div>
+              <div>
+                <dt>密码</dt>
+                <dd>
+                  <code>DemoGarden!2026</code>
+                </dd>
+              </div>
+            </dl>
+            <p className="demo-credentials-warning">仅用于公开演示，请勿提交个人信息或敏感内容。</p>
+          </section>
+        ) : null}
       </header>
       <figure className="detail-cover">
         <Image src={p.cover} alt={p.coverAlt} width={1440} height={900} priority />
