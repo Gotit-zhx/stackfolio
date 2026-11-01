@@ -21,11 +21,13 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
   if (!p) notFound()
   const demoUrl =
     p.demoUrl ||
-    (p.slug === 'postmaker'
-      ? process.env.NEXT_PUBLIC_POSTMAKER_URL
-      : p.slug === 'baicaoyuan'
-        ? process.env.NEXT_PUBLIC_BAICAOYUAN_URL
-        : undefined)
+    (p.slug === 'stackfolio'
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : p.slug === 'postmaker'
+        ? process.env.NEXT_PUBLIC_POSTMAKER_URL
+        : p.slug === 'baicaoyuan'
+          ? process.env.NEXT_PUBLIC_BAICAOYUAN_URL
+          : undefined)
   return (
     <article className="wrap detail-page">
       <Link className="back-link" href="/projects">
