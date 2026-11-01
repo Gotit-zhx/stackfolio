@@ -29,12 +29,12 @@ Caddy 在服务器宿主机监听 80/443，按域名转发到回环端口。3000
 | `postmaker`  | A 或 CNAME | `120.24.174.196` 或 `@` |
 | `baicaoyuan` | A 或 CNAME | `120.24.174.196` 或 `@` |
 
-私有地址 `172.17.1.64` 不得写入公网 DNS。不要为管理台创建 `admin.gotit-zhx.top` 记录。
+云服务器私网地址不得写入公网 DNS。不要为管理台创建 `admin.gotit-zhx.top` 记录。
 
 变更记录后，在服务器上验证解析和 HTTPS 路由：
 
 ```bash
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 'for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do printf "%s: " "$host"; getent ahostsv4 "$host" | head -n 1; curl -fsSL -o /dev/null -w "HTTP %{http_code}, IP %{remote_ip}\\n" "https://$host/"; done'
+ssh -i "$SSH_KEY" admin@120.24.174.196 'for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do printf "%s: " "$host"; getent ahostsv4 "$host" | head -n 1; curl -fsSL -o /dev/null -w "HTTP %{http_code}, IP %{remote_ip}\\n" "https://$host/"; done'
 ```
 
 本机网络可能通过 DNS 代理返回 `198.18.0.0/15` 测试地址；这种结果不能证明生产 DNS 错误。以外部解析、服务器上的 `getent`，以及 HTTPS 实际返回的 `remote_ip` 共同判断。
@@ -105,10 +105,10 @@ docker buildx build \
 
 ```bash
 docker save stackfolio-site-site:v0.1.2 | gzip | \
-  ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 \
+  ssh -i "$SSH_KEY" admin@120.24.174.196 \
   'gunzip | docker load'
 
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 <<'REMOTE'
+ssh -i "$SSH_KEY" admin@120.24.174.196 <<'REMOTE'
 set -eu
 cd /srv/stackfolio
 old=$(docker image inspect stackfolio-site-site -f '{{.Id}}')
@@ -140,7 +140,7 @@ free -m
 如果只有主站更新异常，回退镜像并保留数据卷：
 
 ```bash
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196
+ssh -i "$SSH_KEY" admin@120.24.174.196
 ```
 
 在服务器 shell 中执行：
@@ -163,8 +163,8 @@ sudo systemctl reload caddy
 管理台不使用公网域名。维护时，在 Mac 上建立 SSH 隧道：
 
 ```bash
-ssh -N -i /Users/gotit/Downloads/SSH-key.pem \
-  -L 9090:127.0.0.1:9090 root@120.24.174.196
+ssh -N -i "$SSH_KEY" \
+  -L 9090:127.0.0.1:9090 admin@120.24.174.196
 ```
 
 然后只在本机打开 `http://127.0.0.1:9090`。关闭终端即关闭隧道；不要把 9090 添加到 Caddy 或安全组。

@@ -7,7 +7,7 @@ export default function About() {
       <div className="page-heading">
         <p className="eyebrow">A LITTLE ABOUT ME</p>
         <h1>
-          你好，我是Gotit-zhx<span>.</span>
+          你好，我是 Gotit-zhx<span>.</span>
         </h1>
         <p>关注 AI 应用、Agent 工作流与全栈工程。</p>
       </div>
