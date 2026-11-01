@@ -1,0 +1,24 @@
+
+  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+      <title>Gotit-zhx · AI 应用与工程实践</title>
+      <link>https://gotit-zhx.top/blog</link>
+      <description>将 AI 想法变成可体验的产品。Gotit-zhx 的项目、工程笔记与个人网站。</description>
+      <language>zh-CN</language>
+      <managingEditor>207259705@qq.com (Gotit-zhx)</managingEditor>
+      <webMaster>207259705@qq.com (Gotit-zhx)</webMaster>
+      <lastBuildDate>Mon, 02 Nov 2026 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://gotit-zhx.top/tags/隐私保护/feed.xml" rel="self" type="application/rss+xml"/>
+
+  <item>
+    <guid>https://gotit-zhx.top/blog/security-privacy-audit</guid>
+    <title>从隐私清理到安全发布：个人网站的一次完整审计</title>
+    <link>https://gotit-zhx.top/blog/security-privacy-audit</link>
+    <description>记录个人网站、项目演示和云服务器的一次安全审计：从公开身份清理、依赖补丁到 SSH、网络边界、发布回滚和线上验收。</description>
+    <pubDate>Mon, 02 Nov 2026 00:00:00 GMT</pubDate>
+    <author>207259705@qq.com (Gotit-zhx)</author>
+    <category>安全实践</category><category>隐私保护</category><category>自托管</category><category>Docker</category><category>Next.js</category><category>Gitflow</category>
+  </item>
+
+    </channel>
+  </rss>
