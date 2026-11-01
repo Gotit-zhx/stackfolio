@@ -1,7 +1,17 @@
 # Copy to /etc/caddy/Caddyfile for the initial IP-based deployment.
 # Replace the site address with a real domain after DNS and ICP filing.
+(security_headers) {
+  header {
+    -Server
+    X-Content-Type-Options nosniff
+    Referrer-Policy strict-origin-when-cross-origin
+    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  }
+}
+
 :80 {
   encode gzip zstd
+  import security_headers
   reverse_proxy 127.0.0.1:3000
 }
 

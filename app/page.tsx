@@ -35,7 +35,7 @@ export default function Home() {
             的产品<span className="hero-period">.</span>
           </h1>
           <p className="hero-intro">
-            你好，我是Gotit-zhx。关注 AI 应用、Agent 工作流与全栈开发，
+            你好，我是 Gotit-zhx。关注 AI 应用、Agent 工作流与全栈开发，
             <br className="desktop-break" />
             在真实项目中连接模型能力、产品体验和工程交付。
           </p>

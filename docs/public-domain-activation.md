@@ -40,7 +40,7 @@
 | `postmaker`  | A 或 CNAME | `120.24.174.196` 或 `@` | PostMaker 演示 |
 | `baicaoyuan` | A 或 CNAME | `120.24.174.196` 或 `@` | 百草园演示     |
 
-不要填写私有地址 `172.17.1.64`，不要给管理台创建 `admin.gotit-zhx.top` 记录。
+不要填写云服务器私网地址，也不要给管理台创建 `admin.gotit-zhx.top` 记录。
 
 添加后等待 DNS 生效，并在本机运行：
 
