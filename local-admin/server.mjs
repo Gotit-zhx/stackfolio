@@ -239,7 +239,7 @@ async function main() {
     console.error(`管理台启动失败：${error.message}`)
     process.exitCode = 1
   })
-  server.listen(9090, '127.0.0.1', () =>
+  server.listen(9090, process.env.ADMIN_HOST || '127.0.0.1', () =>
     console.log(
       `个人管理台：http://127.0.0.1:9090\n访问码仅保存在本机：${passwordFile}\n用 cat 读取后登录；请勿分享或提交该文件。`
     )
