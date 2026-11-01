@@ -1,10 +1,11 @@
 # Stackfolio 本地部署目录
 
-这里模拟云服务器上的应用目录。`apps/` 下的两个 GitHub 仓库是运行时克隆，不纳入根仓库提交；主站使用根目录代码构建。三个 Compose 项目使用不同的 project name，数据卷与端口互不共享。
+这里模拟云服务器上的应用目录。`apps/` 下的两个 GitHub 仓库是运行时克隆，不纳入根仓库提交；主站和个人管理台使用 `stackfolio-site` Compose project，两个演示使用独立 project，数据卷与端口互不共享。管理台只绑定回环地址，并读取 Docker 容器指标。Docker socket 具有高权限，管理台不可公开到互联网，只能通过 SSH 隧道访问。
 
 | 服务            | 本地入口              | Compose project         |
 | --------------- | --------------------- | ----------------------- |
 | Stackfolio 主站 | http://localhost:3000 | `stackfolio-site`       |
+| 个人管理台       | http://127.0.0.1:9090 | `stackfolio-site`       |
 | PostMaker       | http://localhost:8787 | `stackfolio-postmaker`  |
 | 百草园          | http://localhost:8088 | `stackfolio-baicaoyuan` |
 
@@ -15,6 +16,7 @@
 ```bash
 ./local-server/clone-projects.sh
 ./local-server/start.sh all
+./local-server/start.sh admin
 ./local-server/status.sh
 ./local-server/logs.sh postmaker
 ./local-server/stop.sh all
@@ -39,14 +41,15 @@ docker compose -p stackfolio-baicaoyuan \
 ./local-server/start.sh site
 ```
 
-云服务器上建议使用独立域名或子域名分别指向主站、PostMaker 和百草园。`BIND_ADDRESS=127.0.0.1` 继续保持回环绑定，调整 `NEXT_PUBLIC_*` 为实际 HTTPS 域名，由公网反向代理连接本机端口。首次公网部署前还要配置 HTTPS、应用代理信任与安全 Cookie、AI 模型额度、邮件服务、备份和资源限制；当前配置默认仅绑定本机地址，百草园注册关闭。分阶段采购、备案及配置清单见 [云服务器与部署规划](../docs/cloud-deployment-plan.md)，现有配置不是直接公网部署模板。
+云服务器上建议使用独立域名或子域名分别指向主站、PostMaker 和百草园。`BIND_ADDRESS=127.0.0.1` 继续保持回环绑定，调整 `NEXT_PUBLIC_*` 为实际 HTTPS 域名，由公网反向代理连接本机端口。管理台包含 Docker socket 访问，只可通过 SSH 隧道访问，绝不交给公网反向代理。首次公网部署前还要配置 HTTPS、应用代理信任与安全 Cookie、AI 模型额度、邮件服务、备份和资源限制；当前配置默认仅绑定本机地址，百草园注册关闭。备案与配置清单见 [云服务器与部署规划](../docs/cloud-deployment-plan.md)。
 
 ## 目录
 
 ```text
 local-server/
 ├── apps/                  # GitHub 克隆，Git 忽略
-├── compose.yaml           # Stackfolio 主站
+├── compose.yaml           # Stackfolio 主站与个人管理台
+├── ../deploy/admin.Dockerfile
 ├── site.Dockerfile        # Next standalone 镜像
 ├── postmaker.override.yaml
 ├── clone-projects.sh
