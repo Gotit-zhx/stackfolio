@@ -53,6 +53,6 @@ node .yarn/releases/yarn-3.6.1.cjs test:admin
 node .yarn/releases/yarn-3.6.1.cjs test:content
 ```
 
-暂不切 release 或更新 main，因为当前只完成本地验收，没有云服务器或公开发布。个人管理台保存内容后也应在 feature 分支提交，再合入 develop；不会自动提交和推送。
+当前已完成阿里云实例上的受限验收部署，但尚未进行域名、备案和公网生产发布，因此仍不切 `release/*` 或更新 `main`。个人管理台保存内容后也应在 feature 分支提交，再合入 develop；不会自动提交和推送。
 
 纯文档变更检查 Markdown 格式、引用路径及 `git diff --check`，不需要重建未变更的应用。云服务器选型与发布步骤见 [部署规划](cloud-deployment-plan.md)。

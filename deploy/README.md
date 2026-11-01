@@ -1,6 +1,6 @@
 # 云服务器部署模板
 
-当前阿里云 Ubuntu 24.04 实例仅用于本人受限验收：没有域名或 ICP 备案，网站和演示不对公网开放。服务器目录为 `/srv/stackfolio`，主站和管理台由 Gitflow `develop` 分支管理，演示项目保留各自仓库及独立 Compose project。公网 SSH 可用时，通过 SSH 隧道访问回环绑定端口；公网 80/443 不代理这些服务。
+当前阿里云 Ubuntu 24.04 实例已完成本人受限验收：没有域名或 ICP 备案，网站和演示不对公网开放。服务器目录为 `/srv/stackfolio`，主站和管理台由 Gitflow `develop` 分支管理，演示项目保留各自仓库及独立 Compose project。通过 SSH 隧道访问回环绑定端口；当前没有将这些服务代理到公网 80/443。
 
 服务器资源有限，按 `site`、`admin`、`postmaker`、`baicaoyuan` 顺序启动，等待一项健康后再启动下一项。不要在服务器同时构建多个应用。公开配置模板为 `local-server/.env.example`；服务器 `.env`、演示项目密钥和管理台访问码只保存在服务器。
 
