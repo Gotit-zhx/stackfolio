@@ -37,7 +37,7 @@ git switch develop
 git merge --no-ff release/v0.1.0
 ```
 
-本地 MVP 通过 `feature/local-mvp` 合入 `develop`；主题、内容、导航与个人管理台通过 `feature/portfolio-polish` 开发和验收，再通过非快进合并回 `develop`。远程仓库为 <https://github.com/Gotit-zhx/stackfolio>，目前私有，`origin` 已配置且 `main`、`develop` 已推送。默认分支为 `develop`，用于展示当前集成进度；生产版本仍以 `main` 和发布标签为准。`local-server/apps/` 中的 PostMaker 和百草园是运行时克隆，保持在各自仓库的分支和提交中，不参与 Stackfolio 的 Gitflow 提交。
+本地 MVP 通过 `feature/local-mvp` 合入 `develop`；主题、内容、导航与个人管理台通过 `feature/portfolio-polish` 开发和验收，再通过非快进合并回 `develop`。远程仓库为公开的 <https://github.com/Gotit-zhx/stackfolio>，`origin` 已配置，默认分支为 `develop`，用于展示当前集成进度；生产版本仍以 `main` 和发布标签为准。`local-server/apps/` 中的 PostMaker 和百草园是运行时克隆，保持在各自仓库的分支和提交中，不参与 Stackfolio 的 Gitflow 提交。
 
 集成完成后推送 `git push origin develop`；需要远程协作时也可执行 `git push -u origin feature/<topic>`。仓库已公开，默认分支仍为 `develop`。发布验收完成后再推送 `main`、`develop` 及对应版本标签，不把功能上传等同于生产发布。
 
