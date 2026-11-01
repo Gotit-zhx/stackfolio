@@ -8,7 +8,7 @@ set +a
 compose() {
   local target="$1"; shift
   case "$target" in
-    site) docker compose -p stackfolio-site --env-file "$DEPLOY_ROOT/.env" -f "$DEPLOY_ROOT/compose.yaml" "$@" ;;
+    site|admin) docker compose -p stackfolio-site --env-file "$DEPLOY_ROOT/.env" -f "$DEPLOY_ROOT/compose.yaml" "$@" ;;
     postmaker) docker compose -p stackfolio-postmaker --env-file "$DEPLOY_ROOT/apps/postmaker/.env" -f "$DEPLOY_ROOT/apps/postmaker/docker-compose.public.yml" -f "$DEPLOY_ROOT/postmaker.override.yaml" "$@" ;;
     baicaoyuan) PUBLIC_ORIGIN="${NEXT_PUBLIC_BAICAOYUAN_URL}" HTTP_PORT="${BAICAOYUAN_HTTP_PORT}" HTTPS_PORT="${BAICAOYUAN_HTTPS_PORT}" docker compose -p stackfolio-baicaoyuan --env-file "$DEPLOY_ROOT/apps/baicaoyuan/.env.compose" -f "$DEPLOY_ROOT/apps/baicaoyuan/compose.yaml" "$@" ;;
     *) printf 'Unknown service: %s\n' "$target" >&2; return 2 ;;
@@ -17,7 +17,7 @@ compose() {
 init_project() {
   local target="$1"
   case "$target" in
-    site) ;;
+    site|admin) ;;
     postmaker)
       [ -d "$DEPLOY_ROOT/apps/postmaker/.git" ] || { echo 'Run ./clone-projects.sh first' >&2; return 1; }
       local env_file="$DEPLOY_ROOT/apps/postmaker/.env"
