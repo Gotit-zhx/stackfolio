@@ -1,0 +1,17 @@
+# Copy to /etc/caddy/Caddyfile for the initial IP-based deployment.
+# Replace the site address with a real domain after DNS and ICP filing.
+:80 {
+  encode gzip zstd
+  reverse_proxy 127.0.0.1:3000
+}
+
+# With a domain, use separate hostnames and let Caddy manage HTTPS:
+# example.com {
+#   reverse_proxy 127.0.0.1:3000
+# }
+# postmaker.example.com {
+#   reverse_proxy 127.0.0.1:8787
+# }
+# baicaoyuan.example.com {
+#   reverse_proxy 127.0.0.1:8088
+# }

@@ -6,7 +6,7 @@ clone_project() {
   local name="$1" repo="$2" branch="$3"
   local target="$ROOT_DIR/apps/$name"
   if [ -d "$target/.git" ]; then printf 'Already cloned: %s\n' "$name"; return; fi
-  gh repo clone "$repo" "$target" -- --branch "$branch"
+  git clone --branch "$branch" --single-branch "https://github.com/$repo.git" "$target"
 }
 clone_project postmaker Gotit-zhx/PostMaker main
 clone_project baicaoyuan Gotit-zhx/Text-Image-Platform master

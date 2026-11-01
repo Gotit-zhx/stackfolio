@@ -1,10 +1,10 @@
 # Stackfolio · Gotit-zhx的个人网站
 
-以 Next.js 和成熟的 Tailwind Nextjs Starter Blog 为基础的中文个人作品集。采用 Gotit-zhx 品牌符号，支持整站明暗切换、移动导航与克制的动效。项目内容按公开仓库核对；两个项目经本人确认均为独立编写，不补写未经确认的学校或雇主。
+以 Next.js、TypeScript、MDX 和 Docker Compose 构建的中文个人作品集与发布工作台。它同时承载自我介绍、项目详情、在线演示入口、博客和仅本人可访问的资源监控。项目内容按公开仓库核对；三个展示项目均为本人独立编写，不补写未经确认的学校或雇主经历。
 
 ## 本地启动
 
-需要 macOS、Docker Desktop、Node.js 22+、GitHub CLI（`gh auth login`）和 Git。主站及两个演示由 `local-server/` 中的脚本统一管理，三个项目仍以独立容器运行。
+需要 macOS、Docker Desktop、Node.js 22+ 和 Git。主站及两个演示由 `local-server/` 中的脚本统一管理，三个项目仍以独立容器运行。
 
 ```bash
 ./local-server/clone-projects.sh
@@ -74,8 +74,8 @@ git merge --no-ff feature/<topic>
 
 功能合并前运行 lint、typecheck、build、test:admin、test:content，并验收主站与演示。无需全局 Yarn，可用 `node .yarn/releases/yarn-3.6.1.cjs <命令>`；纯文档变更检查格式、链接和 Git 差异即可。
 
-远程仓库为 [Gotit-zhx/stackfolio](https://github.com/Gotit-zhx/stackfolio)，目前私有；`origin` 已配置，`main` 和 `develop` 已推送，默认分支为 `develop`。完成集成后执行 `git push origin develop`；生产发布另走 `release/*`，不因日常上传直接更新 `main`。完整流程见 [Gitflow 说明](docs/gitflow.md)。
+远程仓库为公开的 [Gotit-zhx/stackfolio](https://github.com/Gotit-zhx/stackfolio)，默认分支为 `develop`；`main` 只保存经过验收的发布版本。完成集成后执行 `git push origin develop`；生产发布另走 `release/*`，不因日常上传直接更新 `main`。完整流程见 [Gitflow 说明](docs/gitflow.md)。
 
 ## 云服务器规划
 
-主要面向中国大陆访客，服务器月均预算不超过 50 元，当前尚无域名，也未购买服务器。候选配置、官方价格核对、备案安排及三套应用的统一部署路径见 [云服务器与部署规划](docs/cloud-deployment-plan.md)。
+主要面向中国大陆访客，服务器月均预算不超过 50 元。当前部署目标为阿里云 Ubuntu 24.04 实例；域名和 ICP 备案仍按 [云服务器与部署规划](docs/cloud-deployment-plan.md) 单独推进。云端模板和 Caddy 入口见 [云服务器部署模板](deploy/README.md)。
