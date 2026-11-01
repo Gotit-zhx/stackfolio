@@ -1,14 +1,18 @@
 # 云服务器部署模板
 
-服务器目录建议使用 `/srv/stackfolio`。将仓库固定在已验收的 Git 提交或 tag，复制 `local-server/.env.example` 为 `local-server/.env`，再按服务器地址填写公开 URL。`BIND_ADDRESS` 可设置为 `127.0.0.1`，公网入口由 Caddy 连接回环端口；演示端口不应直接暴露给 Docker 之外的服务。
+当前阿里云 Ubuntu 24.04 实例仅用于本人受限验收：没有域名或 ICP 备案，网站和演示不对公网开放。服务器目录为 `/srv/stackfolio`，主站和管理台由 Gitflow `develop` 分支管理，演示项目保留各自仓库及独立 Compose project。公网 SSH 可用时，通过 SSH 隧道访问回环绑定端口；公网 80/443 不代理这些服务。
+
+服务器资源有限，按 `site`、`admin`、`postmaker`、`baicaoyuan` 顺序启动，等待一项健康后再启动下一项。不要在服务器同时构建多个应用。公开配置模板为 `local-server/.env.example`；服务器 `.env`、演示项目密钥和管理台访问码只保存在服务器。
 
 首次上线的顺序：
 
-1. 安装 Docker Engine、Compose plugin、Git、Caddy，并创建约 2 GiB swap。
-2. `git clone` Stackfolio 以及两个公开演示仓库；不要在服务器保存个人 GitHub token。
-3. 复制环境模板，生成 PostMaker workspace secret 和百草园 secrets。
-4. 按 `site`、`postmaker`、`baicaoyuan` 顺序执行 `./local-server/start.sh`，避免小内存实例同时构建。
-5. 用 `deploy/Caddyfile.example` 配置主站入口；管理台保持 `127.0.0.1:9090`，仅通过 SSH 隧道访问。
-6. 完成健康检查、端口检查和数据持久化检查后，才把项目详情的 `demoStatus` 改为 `live`。
+1. 服务器已安装 Docker Engine、Compose plugin、Git、Caddy，并创建约 2 GiB swap。
+2. Stackfolio 和两个公开演示仓库已克隆到 `/srv/stackfolio`；克隆使用公开 HTTPS，不保存个人 GitHub token。
+3. 服务器专用环境配置和应用 secrets 已生成，均未提交 Git。
+4. 服务依次构建并启动；每项启动后须单独通过健康检查。
+5. Caddy 继续监听公网 80，但不代理网站或演示；通过 SSH 隧道访问服务器回环端口。管理台只监听 `127.0.0.1:9090`。
+6. 无域名和备案期间，项目详情保持未上线；只有完成合规公网发布并通过 HTTPS 验收后才改为 `live`。
 
-没有域名和备案时，IP 入口只用于受限验收；正式面向中国大陆访客前，应完成域名实名认证、ICP备案和 HTTPS 配置。
+管理台容器需要访问 Docker socket 来读取容器统计；Docker socket 的访问权限等同于主机 root，因此管理台必须继续保持 `127.0.0.1:9090`，并且只能通过 SSH 隧道打开。不要将 9090 放进安全组或 Caddy 反向代理。
+
+当前受限验收只通过 SSH 隧道访问，不使用公网 IP 作为网站入口。正式面向中国大陆访客前，应完成域名实名认证、ICP备案和 HTTPS 配置。
