@@ -2,18 +2,18 @@
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>Gotit-zhx · AI 应用与工程实践</title>
-      <link>http://localhost:3000/blog</link>
+      <link>https://gotit-zhx.top/blog</link>
       <description>将 AI 想法变成可体验的产品。Gotit-zhx的项目、工程笔记与个人网站。</description>
       <language>zh-CN</language>
       <managingEditor>207259705@qq.com (Gotit-zhx)</managingEditor>
       <webMaster>207259705@qq.com (Gotit-zhx)</webMaster>
       <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
-      <atom:link href="http://localhost:3000/tags/docker-compose/feed.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="https://gotit-zhx.top/tags/docker-compose/feed.xml" rel="self" type="application/rss+xml"/>
 
   <item>
-    <guid>http://localhost:3000/blog/building-stackfolio</guid>
+    <guid>https://gotit-zhx.top/blog/building-stackfolio</guid>
     <title>从本地开始：个人网站与项目演示的部署设计</title>
-    <link>http://localhost:3000/blog/building-stackfolio</link>
+    <link>https://gotit-zhx.top/blog/building-stackfolio</link>
     <description>主站负责表达，演示负责体验；用独立应用和统一入口，为后续迁移到云服务器做准备。</description>
     <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
     <author>207259705@qq.com (Gotit-zhx)</author>
@@ -21,9 +21,9 @@
   </item>
 
   <item>
-    <guid>http://localhost:3000/blog/isolating-demo-environments</guid>
+    <guid>https://gotit-zhx.top/blog/isolating-demo-environments</guid>
     <title>给项目演示建立隔离的本地运行环境</title>
-    <link>http://localhost:3000/blog/isolating-demo-environments</link>
+    <link>https://gotit-zhx.top/blog/isolating-demo-environments</link>
     <description>把个人网站、PostMaker 和百草园放进独立服务与数据卷，再用统一脚本管理启动、日志和停止。</description>
     <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
     <author>207259705@qq.com (Gotit-zhx)</author>
