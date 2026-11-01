@@ -20,7 +20,7 @@
 ./local-server/stop.sh all
 ```
 
-`clone-projects.sh` 使用 `gh repo clone` 拉取 `PostMaker@main` 和 `Text-Image-Platform@master`；已存在的 clone 不会自动 pull、reset 或覆盖本地改动。`start.sh` 首次运行会复制环境模板、生成 PostMaker workspace 密钥，并调用百草园的 `init-compose.sh` 生成本地 secrets。停止时不使用 `--volumes`，因此 SQLite、媒体和工作区数据会保留。
+`clone-projects.sh` 使用公开 HTTPS Git URL 拉取 `PostMaker@main` 和 `Text-Image-Platform@master`，本地和云服务器都不需要 GitHub CLI；已存在的 clone 不会自动 pull、reset 或覆盖本地改动。`start.sh` 首次运行会复制环境模板、生成 PostMaker workspace 密钥，并调用百草园的 `init-compose.sh` 生成本地 secrets。停止时不使用 `--volumes`，因此 SQLite、媒体和工作区数据会保留。
 
 百草园首次启动后可导入仓库自带的公开演示数据：
 
