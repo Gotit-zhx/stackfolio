@@ -9,7 +9,16 @@ compose() {
   local target="$1"; shift
   case "$target" in
     site|admin) docker compose -p stackfolio-site --env-file "$DEPLOY_ROOT/.env" -f "$DEPLOY_ROOT/compose.yaml" "$@" ;;
-    postmaker) docker compose -p stackfolio-postmaker --env-file "$DEPLOY_ROOT/apps/postmaker/.env" -f "$DEPLOY_ROOT/apps/postmaker/docker-compose.public.yml" -f "$DEPLOY_ROOT/postmaker.override.yaml" "$@" ;;
+    postmaker)
+      local -a files=(
+        -f "$DEPLOY_ROOT/apps/postmaker/docker-compose.public.yml"
+        -f "$DEPLOY_ROOT/postmaker.override.yaml"
+      )
+      if [ "${POSTMAKER_RESOURCE_PROFILE:-}" = low ]; then
+        files+=(-f "$DEPLOY_ROOT/postmaker.server.override.yaml")
+      fi
+      docker compose -p stackfolio-postmaker --env-file "$DEPLOY_ROOT/apps/postmaker/.env" "${files[@]}" "$@"
+      ;;
     baicaoyuan) PUBLIC_ORIGIN="${NEXT_PUBLIC_BAICAOYUAN_URL}" HTTP_PORT="${BAICAOYUAN_HTTP_PORT}" HTTPS_PORT="${BAICAOYUAN_HTTPS_PORT}" docker compose -p stackfolio-baicaoyuan --env-file "$DEPLOY_ROOT/apps/baicaoyuan/.env.compose" -f "$DEPLOY_ROOT/apps/baicaoyuan/compose.yaml" "$@" ;;
     *) printf 'Unknown service: %s\n' "$target" >&2; return 2 ;;
   esac

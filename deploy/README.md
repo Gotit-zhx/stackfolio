@@ -4,6 +4,8 @@
 
 服务器资源有限，按 `site`、`admin`、`postmaker`、`baicaoyuan` 顺序启动，等待一项健康后再启动下一项。不要在服务器同时构建多个应用。公开配置模板为 `local-server/.env.example`；服务器 `.env`、演示项目密钥和管理台访问码只保存在服务器。
 
+PostMaker 在低配实例上必须在服务器私有环境文件中设置 `POSTMAKER_RESOURCE_PROFILE=low`。根目录脚本会自动叠加 `local-server/postmaker.server.override.yaml`，限制四个容器的内存、swap、CPU 和进程数；本机默认不启用该限制文件。启动后逐项观察健康状态与 `docker stats`，不要在服务器执行镜像构建。
+
 首次上线的顺序：
 
 1. 服务器已安装 Docker Engine、Compose plugin、Git、Caddy，并创建约 2 GiB swap。
