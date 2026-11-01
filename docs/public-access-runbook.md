@@ -60,7 +60,7 @@ ICP备案已通过，当前按要求不在页脚展示备案号。若备案信�
 
 ## 3. 当前部署的验证证据
 
-服务器 `/srv/stackfolio` 当前位于 Git 提交 `7b42ad7`（`develop`），公网 Caddy 配置校验通过，以下四个地址均返回 HTTP 200：
+服务器 `/srv/stackfolio` 当前应用内容对应 `v0.1.1`，公网 Caddy 配置校验通过，以下四个地址均返回 HTTP 200：
 
 ```text
 https://gotit-zhx.top
