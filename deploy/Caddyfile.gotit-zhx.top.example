@@ -2,18 +2,30 @@
 # 只有在域名已完成 ICP 备案、DNS 已指向服务器且完成发布验收后才启用。
 # 管理台不配置公网域名，继续通过 SSH 隧道访问 127.0.0.1:9090。
 
+(security_headers) {
+  header {
+    -Server
+    X-Content-Type-Options nosniff
+    Referrer-Policy strict-origin-when-cross-origin
+    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  }
+}
+
 gotit-zhx.top, www.gotit-zhx.top {
   encode gzip zstd
+  import security_headers
   reverse_proxy 127.0.0.1:3000
 }
 
 postmaker.gotit-zhx.top {
   encode gzip zstd
+  import security_headers
   reverse_proxy 127.0.0.1:18787
 }
 
 baicaoyuan.gotit-zhx.top {
   encode gzip zstd
+  import security_headers
   reverse_proxy 127.0.0.1:18088
 }
 

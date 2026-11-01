@@ -1643,6 +1643,56 @@ button:focus-visible {
   line-height: 1.8;
   margin: 7px 0 0 22px;
 }
+.demo-credentials {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 28px;
+  align-items: start;
+  margin-top: 14px;
+  padding: 18px 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.demo-credentials-label {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.demo-credentials-note,
+.demo-credentials-warning {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.demo-credentials dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, auto));
+  gap: 10px 18px;
+  margin: 0;
+}
+.demo-credentials dl > div {
+  display: grid;
+  gap: 4px;
+}
+.demo-credentials dt {
+  color: var(--muted);
+  font-size: 10px;
+}
+.demo-credentials dd {
+  margin: 0;
+}
+.demo-credentials code {
+  color: var(--ink);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.demo-credentials-warning {
+  grid-column: 1 / -1;
+  margin-top: -2px;
+}
 .detail-gallery,
 .detail-contributions {
   max-width: 850px;
@@ -1779,6 +1829,13 @@ button:focus-visible {
   }
   .demo-panel p {
     font-size: 11px;
+  }
+  .demo-credentials {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .demo-credentials dl {
+    grid-template-columns: 1fr;
   }
   .detail-gallery,
   .detail-contributions {

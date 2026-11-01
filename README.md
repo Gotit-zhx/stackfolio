@@ -1,4 +1,4 @@
-# Stackfolio · Gotit-zhx的个人网站
+# Stackfolio · Gotit-zhx 的个人网站
 
 以 Next.js、TypeScript、MDX 和 Docker Compose 构建的中文个人作品集与发布工作台。它同时承载自我介绍、项目详情、在线演示入口、博客和仅本人可访问的资源监控。项目内容按公开仓库核对；三个展示项目均为本人独立编写，不补写未经确认的学校或雇主经历。
 

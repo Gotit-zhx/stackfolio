@@ -2,7 +2,7 @@
 
 本文集中记录阿里云控制台中需要手动维护的项目、已部署入口、主站安全更新流程和故障回退步骤。当前公网入口已经启用；后续操作用于复核、更新和故障处理。
 
-最后核验时间：2026-11-01（Asia/Shanghai）
+最后核验时间：2026-11-02（Asia/Shanghai）
 
 ## 1. 当前公网入口
 
@@ -29,12 +29,12 @@ Caddy 在服务器宿主机监听 80/443，按域名转发到回环端口。3000
 | `postmaker`  | A 或 CNAME | `120.24.174.196` 或 `@` |
 | `baicaoyuan` | A 或 CNAME | `120.24.174.196` 或 `@` |
 
-私有地址 `172.17.1.64` 不得写入公网 DNS。不要为管理台创建 `admin.gotit-zhx.top` 记录。
+云服务器私网地址不得写入公网 DNS。不要为管理台创建 `admin.gotit-zhx.top` 记录。
 
 变更记录后，在服务器上验证解析和 HTTPS 路由：
 
 ```bash
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 'for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do printf "%s: " "$host"; getent ahostsv4 "$host" | head -n 1; curl -fsSL -o /dev/null -w "HTTP %{http_code}, IP %{remote_ip}\\n" "https://$host/"; done'
+ssh -i "$SSH_KEY" admin@120.24.174.196 'for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do printf "%s: " "$host"; getent ahostsv4 "$host" | head -n 1; curl -fsSL -o /dev/null -w "HTTP %{http_code}, IP %{remote_ip}\\n" "https://$host/"; done'
 ```
 
 本机网络可能通过 DNS 代理返回 `198.18.0.0/15` 测试地址；这种结果不能证明生产 DNS 错误。以外部解析、服务器上的 `getent`，以及 HTTPS 实际返回的 `remote_ip` 共同判断。
@@ -55,7 +55,7 @@ ICP备案已通过，当前按要求不在页脚展示备案号。若备案信�
 
 ## 3. 当前部署的验证证据
 
-服务器 `/srv/stackfolio` 当前应用内容对应 `v0.1.1`，公网 Caddy 配置校验通过，以下四个地址均返回 HTTP 200：
+服务器 `/srv/stackfolio` 使用明确版本的主站镜像。通过 `sudo -n docker inspect stackfolio-site-site-1 --format '{{.Image}}'` 与发布记录核对实际运行版本；不要仅根据仓库分支判断部署状态。公网 Caddy 配置校验通过，以下四个地址均返回 HTTP 200：
 
 ```text
 https://gotit-zhx.top
@@ -64,7 +64,7 @@ https://postmaker.gotit-zhx.top
 https://baicaoyuan.gotit-zhx.top
 ```
 
-PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；服务器可用内存约 465 MiB，并保留约 2 GiB swap。主站镜像在 Mac 上以 `linux/amd64` 构建后传输，服务器不执行主站构建。
+PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；2026-11-02 核验时服务器可用内存约 400 MiB，并保留约 2 GiB swap。主站镜像在 Mac 上以 `linux/amd64` 构建后传输，服务器不执行主站构建。
 
 ## 4. 以后发布主站更新的低负载流程
 
@@ -101,24 +101,24 @@ docker buildx build \
 
 ### 4.3 传输、保留回滚镜像并更新单个服务
 
-以下命令不会把密码或私钥写入仓库；私钥路径按本机实际位置调整。服务器只加载镜像，不执行 `docker build`。
+在 Mac 上先将 `SSH_KEY` 设置为本机私钥文件的路径，不要把该值提交到仓库。以下远程命令使用 `admin` 登录，并通过 `sudo -n` 调用 Docker；该用户不需要加入 Docker 用户组。服务器只加载镜像，不执行 `docker build`。
 
 ```bash
 docker save stackfolio-site-site:v0.1.2 | gzip | \
-  ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 \
-  'gunzip | docker load'
+  ssh -i "$SSH_KEY" admin@120.24.174.196 \
+  'gunzip | sudo -n docker load'
 
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 <<'REMOTE'
+ssh -i "$SSH_KEY" admin@120.24.174.196 <<'REMOTE'
 set -eu
 cd /srv/stackfolio
-old=$(docker image inspect stackfolio-site-site -f '{{.Id}}')
-docker tag "$old" stackfolio-site-site:before-v0.1.2
-docker tag stackfolio-site-site:v0.1.2 stackfolio-site-site:latest
-docker compose -p stackfolio-site \
+old=$(sudo -n docker image inspect stackfolio-site-site -f '{{.Id}}')
+sudo -n docker tag "$old" stackfolio-site-site:before-v0.1.2
+sudo -n docker tag stackfolio-site-site:v0.1.2 stackfolio-site-site:latest
+sudo -n docker compose -p stackfolio-site \
   --env-file local-server/.env \
   -f local-server/compose.yaml \
   up -d --no-build --wait --wait-timeout 90 site
-docker ps --filter name=stackfolio-site-site-1 \
+sudo -n docker ps --filter name=stackfolio-site-site-1 \
   --format '{{.Names}} {{.Image}} {{.Status}}'
 free -m
 REMOTE
@@ -131,7 +131,7 @@ for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.g
   curl -fsSL -o /dev/null -w "$host HTTP %{http_code} %{remote_ip}\n" "https://$host/"
 done
 curl -fsSL https://postmaker.gotit-zhx.top/api/health
-docker ps --format '{{.Names}} {{.Status}}' | sort
+sudo -n docker ps --format '{{.Names}} {{.Status}}' | sort
 free -m
 ```
 
@@ -140,15 +140,15 @@ free -m
 如果只有主站更新异常，回退镜像并保留数据卷：
 
 ```bash
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196
+ssh -i "$SSH_KEY" admin@120.24.174.196
 ```
 
 在服务器 shell 中执行：
 
 ```bash
 cd /srv/stackfolio
-docker tag stackfolio-site-site:before-v0.1.2 stackfolio-site-site:latest
-docker compose -p stackfolio-site --env-file local-server/.env -f local-server/compose.yaml up -d --no-build --wait --wait-timeout 90 site
+sudo -n docker tag stackfolio-site-site:before-v0.1.2 stackfolio-site-site:latest
+sudo -n docker compose -p stackfolio-site --env-file local-server/.env -f local-server/compose.yaml up -d --no-build --wait --wait-timeout 90 site
 ```
 
 如果 Caddy 配置变更失败，先验证再 reload：
@@ -163,8 +163,8 @@ sudo systemctl reload caddy
 管理台不使用公网域名。维护时，在 Mac 上建立 SSH 隧道：
 
 ```bash
-ssh -N -i /Users/gotit/Downloads/SSH-key.pem \
-  -L 9090:127.0.0.1:9090 root@120.24.174.196
+ssh -N -i "$SSH_KEY" \
+  -L 9090:127.0.0.1:9090 admin@120.24.174.196
 ```
 
 然后只在本机打开 `http://127.0.0.1:9090`。关闭终端即关闭隧道；不要把 9090 添加到 Caddy 或安全组。
@@ -173,7 +173,7 @@ ssh -N -i /Users/gotit/Downloads/SSH-key.pem \
 
 1. 检查 DNS 是否仍指向 `120.24.174.196`。
 2. 检查 `sudo caddy validate --config /etc/caddy/Caddyfile` 和 Caddy 服务状态。
-3. 检查 `docker ps`、单个容器日志和 `free -m`。
+3. 检查 `sudo -n docker ps`、单个容器日志和 `free -m`。
 4. 低配实例出现内存不足时，先停止不必要的演示服务，再处理日志或构建问题；不要在服务器同时构建多个应用。
 5. 不要删除 SQLite、媒体目录、Docker volume 或 `.env` 作为常规排障手段。数据恢复前先备份，并记录当前提交、镜像和配置版本。
 
