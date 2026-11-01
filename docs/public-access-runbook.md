@@ -34,12 +34,7 @@ Caddy 在服务器宿主机监听 80/443，按域名转发到回环端口。3000
 变更记录后，在服务器上验证解析和 HTTPS 路由：
 
 ```bash
-ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196
-for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do
-  printf '%s: ' "$host"
-  getent ahostsv4 "$host" | head -n 1
-  curl -fsSL -o /dev/null -w 'HTTP %{http_code}, IP %{remote_ip}\n' "https://$host/"
-done
+ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196 'for host in gotit-zhx.top www.gotit-zhx.top postmaker.gotit-zhx.top baicaoyuan.gotit-zhx.top; do printf "%s: " "$host"; getent ahostsv4 "$host" | head -n 1; curl -fsSL -o /dev/null -w "HTTP %{http_code}, IP %{remote_ip}\\n" "https://$host/"; done'
 ```
 
 本机网络可能通过 DNS 代理返回 `198.18.0.0/15` 测试地址；这种结果不能证明生产 DNS 错误。以外部解析、服务器上的 `getent`，以及 HTTPS 实际返回的 `remote_ip` 共同判断。
@@ -146,10 +141,14 @@ free -m
 
 ```bash
 ssh -i /Users/gotit/Downloads/SSH-key.pem root@120.24.174.196
+```
+
+在服务器 shell 中执行：
+
+```bash
 cd /srv/stackfolio
 docker tag stackfolio-site-site:before-v0.1.2 stackfolio-site-site:latest
-docker compose -p stackfolio-site --env-file local-server/.env \
-  -f local-server/compose.yaml up -d --no-build --wait --wait-timeout 90 site
+docker compose -p stackfolio-site --env-file local-server/.env -f local-server/compose.yaml up -d --no-build --wait --wait-timeout 90 site
 ```
 
 如果 Caddy 配置变更失败，先验证再 reload：
