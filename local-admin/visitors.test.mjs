@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { createVisitorMonitor } from './visitors.mjs'
@@ -102,4 +102,26 @@ test('visitor store serializes concurrent appends without losing records', async
     'utf8'
   )
   assert.equal(contents.trim().split('\n').length, 40)
+})
+
+test('visitor store shares records with the admin group while keeping the directory private', async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'stackfolio-visitor-permissions-'))
+  t.after(() => rm(root, { recursive: true, force: true }))
+  const store = createVisitorStore(root)
+  await store.record('203.0.113.20', '/', 'visitor-shared')
+
+  const directoryMode = (await stat(root)).mode & 0o7777
+  const fileMode = (await stat(path.join(root, `visits-${new Date().toISOString().slice(0, 10)}.jsonl`))).mode & 0o777
+  assert.equal(directoryMode, 0o2770)
+  assert.equal(fileMode, 0o660)
+})
+
+test('visitor monitor returns empty data without creating a missing shared directory', async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'stackfolio-visitors-missing-'))
+  const stateDir = path.join(root, '.local-admin')
+  t.after(() => rm(root, { recursive: true, force: true }))
+
+  const stats = await createVisitorMonitor(stateDir)()
+  assert.equal(stats.totalViews, 0)
+  await assert.rejects(readdir(path.join(stateDir, 'visitors')), { code: 'ENOENT' })
 })
