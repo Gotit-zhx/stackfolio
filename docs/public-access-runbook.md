@@ -64,7 +64,7 @@ https://postmaker.gotit-zhx.top
 https://baicaoyuan.gotit-zhx.top
 ```
 
-PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；2026-11-02 核验时服务器可用内存约 400 MiB，并保留约 2 GiB swap。主站镜像在 Mac 上以 `linux/amd64` 构建后传输，服务器不执行主站构建。
+PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；2026-11-02 核验时服务器可用内存约 379 MiB，并保留约 2 GiB swap。主站和管理台运行 `v0.1.7` 镜像（源代码提交 `858d944`），在 Mac 上按 `linux/amd64` 构建后传输，服务器不执行应用构建。访客统计持久卷已挂载到主站和管理台；线上同意记录、经 Caddy 传递 TCP 对端 IP、撤回后删除关联记录及隐私页均验收通过。
 
 ## 4. 以后发布主站更新的低负载流程
 
