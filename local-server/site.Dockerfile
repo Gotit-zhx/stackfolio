@@ -19,6 +19,7 @@ COPY --from=build --chown=site:site /app/public ./public
 COPY --from=build --chown=site:site /app/.next/standalone ./
 COPY --from=build --chown=site:site /app/.next/static ./.next/static
 RUN mkdir -p .next/cache && chown site:site .next/cache
+RUN mkdir -p .visitor-analytics && chown site:site .visitor-analytics
 USER site
 EXPOSE 3000
 CMD ["node", "server.js"]

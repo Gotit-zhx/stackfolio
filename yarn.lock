@@ -7310,6 +7310,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ip2region@npm:4.0.1":
+  version: 4.0.1
+  resolution: "ip2region@npm:4.0.1"
+  checksum: 53511aac4f07a1b3c28b5f36203d6f58ce2dbe6126074ab53b54ef8471bb351f0c3b4f5f6ef25762912b526b109dcb64a101fbb704d916ae902e79139b79fae1
+  languageName: node
+  linkType: hard
+
 "is-alphabetical@npm:^2.0.0":
   version: 2.0.1
   resolution: "is-alphabetical@npm:2.0.1"
@@ -11350,6 +11357,7 @@ __metadata:
     hast-util-from-html-isomorphic: ^2.0.0
     husky: ^9.1.7
     image-size: 2.0.3
+    ip2region: 4.0.1
     lint-staged: ^16.2.7
     lucide-react: ^1.66.0
     next: 15.5.28

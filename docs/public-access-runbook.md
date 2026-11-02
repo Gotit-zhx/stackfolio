@@ -64,7 +64,7 @@ https://postmaker.gotit-zhx.top
 https://baicaoyuan.gotit-zhx.top
 ```
 
-PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；2026-11-02 核验时服务器可用内存约 400 MiB，并保留约 2 GiB swap。主站镜像在 Mac 上以 `linux/amd64` 构建后传输，服务器不执行主站构建。
+PostMaker 健康接口返回 `status: ok`。主站、管理台、百草园和 PostMaker 相关容器均为 healthy；2026-11-02 核验时服务器可用内存约 379 MiB，并保留约 2 GiB swap。主站和管理台运行 `v0.1.7` 镜像（源代码提交 `858d944`），在 Mac 上按 `linux/amd64` 构建后传输，服务器不执行应用构建。访客统计持久卷已挂载到主站和管理台；线上同意记录、经 Caddy 传递 TCP 对端 IP、撤回后删除关联记录及隐私页均验收通过。
 
 ## 4. 以后发布主站更新的低负载流程
 
@@ -168,6 +168,8 @@ ssh -N -i "$SSH_KEY" \
 ```
 
 然后只在本机打开 `http://127.0.0.1:9090`。关闭终端即关闭隧道；不要把 9090 添加到 Caddy 或安全组。
+
+管理台的“访客记录”只包含在网站上明确同意统计的主站访问，显示完整 IP、访问时间、页面和管理台离线 IPv4 数据库提供的粗略属地。记录最多保留 90 天，存放于 Docker named volume `stackfolio-site-visitor-data`。管理台可手动清空记录。不要删除该 volume 作为普通发布或清理步骤。Caddy 主站代理需覆盖 `X-Real-IP` 为实际连接地址，具体配置见 `deploy/Caddyfile.gotit-zhx.top.example`。
 
 ## 6. 日常检查和故障顺序
 
