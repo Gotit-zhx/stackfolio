@@ -2,7 +2,16 @@ import { readFile, readdir, writeFile, rename, mkdir, lstat, realpath } from 'no
 import path from 'node:path'
 import { createHash, randomBytes } from 'node:crypto'
 import matter from 'gray-matter'
+import yaml from 'js-yaml'
 import { compile } from '@mdx-js/mdx'
+
+// gray-matter 4 still calls the removed js-yaml 3 safeLoad/safeDump APIs.
+// Keep js-yaml 4.x while providing its equivalent safe defaults explicitly.
+const parseMatter = (raw) => matter(raw, { engines: { yaml: { parse: yaml.load, stringify: yaml.dump } } })
+const stringifyMatter = (body, metadata) =>
+  matter.stringify(`\n${body.trim()}\n`, metadata, {
+    engines: { yaml: { parse: yaml.load, stringify: yaml.dump } },
+  })
 
 export class RequestError extends Error {
   constructor(status, message) {
@@ -45,7 +54,7 @@ export function createContentStore(root, stateDir) {
       if (error.code === 'ENOENT') throw new RequestError(404, '内容不存在。')
       throw error
     }
-    const parsed = matter(raw)
+    const parsed = parseMatter(raw)
     // gray-matter parses ISO date values as Date objects; the editor uses YYYY-MM-DD.
     for (const key of ['date', 'lastmod']) {
       if (parsed.data[key] instanceof Date)
@@ -168,7 +177,7 @@ export function createContentStore(root, stateDir) {
         { mode: 0o600 }
       )
     }
-    const next = matter.stringify(`\n${body.trim()}\n`, metadata)
+    const next = stringifyMatter(body, metadata)
     const temporary = `${file}.${randomBytes(6).toString('hex')}.tmp`
     await writeFile(temporary, next, { flag: 'wx', mode: 0o600 })
     await rename(temporary, file)
