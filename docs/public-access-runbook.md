@@ -169,6 +169,8 @@ ssh -N -i "$SSH_KEY" \
 
 然后只在本机打开 `http://127.0.0.1:9090`。关闭终端即关闭隧道；不要把 9090 添加到 Caddy 或安全组。
 
+管理台的“访客记录”只包含在网站上明确同意统计的主站访问，显示完整 IP、访问时间、页面和管理台离线 IPv4 数据库提供的粗略属地。记录最多保留 90 天，存放于 Docker named volume `stackfolio-site-visitor-data`。管理台可手动清空记录。不要删除该 volume 作为普通发布或清理步骤。Caddy 主站代理需覆盖 `X-Real-IP` 为实际连接地址，具体配置见 `deploy/Caddyfile.gotit-zhx.top.example`。
+
 ## 6. 日常检查和故障顺序
 
 1. 检查 DNS 是否仍指向 `120.24.174.196`。

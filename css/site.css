@@ -1787,7 +1787,76 @@ button:focus-visible {
   opacity: 1;
   transform: translateY(0);
 }
+.visitor-notice {
+  position: fixed;
+  z-index: 30;
+  right: 22px;
+  bottom: 22px;
+  width: min(520px, calc(100vw - 32px));
+  display: flex;
+  align-items: end;
+  gap: 18px;
+  padding: 17px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: 0 18px 50px #0004;
+  backdrop-filter: blur(12px);
+}
+
+.privacy-controls {
+  margin: 1.5rem 0;
+}
+
+.privacy-controls p {
+  margin-top: 0.75rem;
+}
+.visitor-notice strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 12px;
+}
+.visitor-notice p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.visitor-notice a {
+  margin-left: 4px;
+  color: var(--accent);
+}
+.visitor-notice-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 7px;
+}
+.visitor-notice-actions button {
+  border-radius: 7px;
+  padding: 8px 11px;
+  font-size: 11px;
+}
+.visitor-notice-decline {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+.visitor-notice-accept {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #19211b;
+}
 @media (max-width: 760px) {
+  .visitor-notice {
+    right: 16px;
+    bottom: 16px;
+    display: block;
+  }
+  .visitor-notice-actions {
+    justify-content: flex-end;
+    margin-top: 11px;
+  }
   .site-header .desktop-nav {
     display: none;
   }

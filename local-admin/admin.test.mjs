@@ -37,6 +37,7 @@ test('private studio: authentication, request boundaries, content persistence an
   assert.equal(server.address().address, '127.0.0.1')
   for (const endpoint of ['/api/content', '/api/metrics', '/api/document?kind=blog&slug=sample'])
     assert.equal((await get(endpoint)).status, 401)
+  assert.equal((await get('/api/visitors')).status, 401)
   const hostileHost = await new Promise((resolve, reject) => {
     request(origin + '/api/session', { headers: { Host: 'evil.example' } }, (response) => {
       response.resume()
@@ -55,6 +56,17 @@ test('private studio: authentication, request boundaries, content persistence an
   assert.match(login.headers.get('content-security-policy'), /frame-ancestors 'none'/)
   cookie = login.headers.get('set-cookie').split(';')[0]
   assert.equal((await get('/api/session')).headers.get('cache-control'), 'no-store')
+  const visitorStats = await get('/api/visitors')
+  assert.equal(visitorStats.status, 200)
+  assert.deepEqual((await visitorStats.json()).records, [])
+  assert.equal(
+    (await fetch(origin + '/api/visitors', {
+      method: 'DELETE',
+      headers: { Cookie: cookie, Origin: origin, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE_VISIT_RECORDS' }),
+    })).status,
+    200
+  )
   assert.equal((await post('/api/document', {}, { Origin: 'https://evil.example' })).status, 403)
   assert.equal((await post('/api/document', {}, { Origin: '' })).status, 403)
   const entry = {
