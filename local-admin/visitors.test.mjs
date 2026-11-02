@@ -111,7 +111,9 @@ test('visitor store shares records with the admin group while keeping the direct
   await store.record('203.0.113.20', '/', 'visitor-shared')
 
   const directoryMode = (await stat(root)).mode & 0o7777
-  const fileMode = (await stat(path.join(root, `visits-${new Date().toISOString().slice(0, 10)}.jsonl`))).mode & 0o777
+  const fileMode =
+    (await stat(path.join(root, `visits-${new Date().toISOString().slice(0, 10)}.jsonl`))).mode &
+    0o777
   assert.equal(directoryMode, 0o2770)
   assert.equal(fileMode, 0o660)
 })
