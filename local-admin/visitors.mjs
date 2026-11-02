@@ -1,5 +1,5 @@
 import { createReadStream } from 'node:fs'
-import { mkdir, readdir, rename, unlink, writeFile } from 'node:fs/promises'
+import { chmod, readdir, rename, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import readline from 'node:readline'
 import { IP2Region } from 'ip2region/node'
@@ -33,8 +33,14 @@ function lookupLocation(ip) {
 }
 
 async function files(directory) {
-  await mkdir(directory, { recursive: true, mode: 0o700 })
-  return (await readdir(directory, { withFileTypes: true }))
+  let entries
+  try {
+    entries = await readdir(directory, { withFileTypes: true })
+  } catch (error) {
+    if (error.code === 'ENOENT') return []
+    throw error
+  }
+  return entries
     .filter((entry) => entry.isFile() && /^visits-\d{4}-\d{2}-\d{2}\.jsonl$/.test(entry.name))
     .map((entry) => entry.name)
 }
@@ -102,7 +108,8 @@ export function createVisitorMonitor(stateDir) {
             await unlink(file).catch(() => {})
           } else {
             const temporary = `${file}.${Date.now()}.tmp`
-            await writeFile(temporary, `${cutoffFileRecords.join('\n')}\n`, { mode: 0o600 })
+            await writeFile(temporary, `${cutoffFileRecords.join('\n')}\n`, { mode: 0o660 })
+            await chmod(temporary, 0o660)
             await rename(temporary, file)
           }
         }
@@ -127,7 +134,9 @@ export function createVisitorMonitor(stateDir) {
   }
   getVisitors.clear = async () => {
     for (const name of await files(directory)) {
-      await writeFile(path.join(directory, name), '', { mode: 0o600 })
+      const file = path.join(directory, name)
+      await writeFile(file, '', { mode: 0o660 })
+      await chmod(file, 0o660)
     }
     cache = null
   }
