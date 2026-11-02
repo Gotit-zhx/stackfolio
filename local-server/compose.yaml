@@ -61,3 +61,4 @@ services:
 volumes:
   visitor-data:
     name: stackfolio-site-visitor-data
+    external: true
