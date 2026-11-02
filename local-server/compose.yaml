@@ -37,7 +37,7 @@ services:
     tmpfs:
       - /tmp:size=32m,mode=1777
     group_add:
-      - '100'
+      - '101'
       - '${DOCKER_GID:-999}'
     ports:
       - '${ADMIN_BIND_ADDRESS:-127.0.0.1}:${ADMIN_PORT:-9090}:9090'
