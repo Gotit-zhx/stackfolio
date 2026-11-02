@@ -555,6 +555,34 @@ input:disabled {
 .table-scroll {
   overflow-x: auto;
 }
+.visitor-table {
+  min-width: 760px;
+}
+.visitor-panel-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.danger {
+  border: 1px solid #ff8a7d66;
+  border-radius: 7px;
+  background: #ff8a7d18;
+  color: #ffb4ac;
+  padding: 7px 10px;
+  font-size: 11px;
+}
+.visitor-ip,
+.visitor-path {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+.visitor-path {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 table {
   border-collapse: collapse;
   width: 100%;

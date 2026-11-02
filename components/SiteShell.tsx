@@ -10,6 +10,7 @@ import type { ReactNode } from 'react'
 import { useTheme } from 'next-themes'
 import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
+import VisitorNotice from '@/components/VisitorNotice'
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -117,6 +118,20 @@ export default function SiteShell({ children }: { children: ReactNode }) {
       elements.forEach((element) => element.classList.remove('reveal-on-scroll'))
     }
   }, [pathname])
+  useEffect(() => {
+    if (localStorage.getItem('gotit-zhx-visitor-consent') !== 'yes') return
+    const body = JSON.stringify({ path: pathname })
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/visitor-consent/', new Blob([body], { type: 'application/json' }))
+    } else {
+      void fetch('/api/visitor-consent/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+      })
+    }
+  }, [pathname])
   return (
     <div className={`site-shell ${home ? 'home-shell' : 'reading-shell'}`}>
       <a className="skip-link" href="#main-content">
@@ -159,6 +174,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main id="main-content">{children}</main>
+      <VisitorNotice />
       <footer className="site-footer wrap">
         <span>© {new Date().getFullYear()} Gotit-zhx</span>
         <span>BUILD, LEARN, REPEAT.</span>

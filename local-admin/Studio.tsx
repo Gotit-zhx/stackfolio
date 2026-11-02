@@ -25,6 +25,7 @@ import {
   Server,
   ShieldCheck,
   Upload,
+  Users,
 } from 'lucide-react'
 
 type Metadata = {
@@ -76,6 +77,16 @@ type Metrics = {
       network?: string
     }[]
   }
+}
+type VisitorData = {
+  available: boolean
+  retentionDays: number
+  generatedAt: string
+  totalViews: number
+  uniqueVisitors: number
+  todayViews: number
+  todayUniqueVisitors: number
+  records: { id: string; time: string; ip: string; location: string; path: string }[]
 }
 const site = 'http://localhost:3000'
 const bytes = (n: number) => `${(n / 1024 ** 3).toFixed(1)} GB`
@@ -323,6 +334,155 @@ function Monitor({
           <p>
             当前显示本机数据。以后可在云服务器通过 SSH 隧道访问同一管理台；不应将 9090 端口或 Docker
             socket 暴露到公网。公众只看到作品、文章与项目演示。
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function VisitorAnalytics({
+  data,
+  loading,
+  refresh,
+}: {
+  data: VisitorData | null
+  loading: boolean
+  refresh: () => void
+}) {
+  const [notice, setNotice] = useState('')
+  const [confirmClear, setConfirmClear] = useState(false)
+  async function clearRecords() {
+    try {
+      const response = await fetch('/api/visitors', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: 'DELETE_VISIT_RECORDS' }),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || '清空失败')
+      setNotice('访问记录已清空。')
+      setConfirmClear(false)
+      refresh()
+    } catch (error) {
+      setNotice((error as Error).message)
+    }
+  }
+  return (
+    <section>
+      <div className="section-title">
+        <div>
+          <p className="eyebrow">SITE TRAFFIC / CONSENT BASED</p>
+          <h2>访客记录</h2>
+        </div>
+        <button className="secondary" onClick={refresh} disabled={loading}>
+          <RefreshCw size={15} className={loading ? 'spinning' : ''} />
+          刷新
+        </button>
+      </div>
+      <p className="scope">
+        仅统计同意访问记录的主站访客。按 IP 粗略去重，属地来自离线数据库，可能不准确。
+      </p>
+      <div className="metric-grid visitor-metric-grid">
+        <article className="metric">
+          <div>
+            <Activity size={17} />
+            <span>累计页面访问</span>
+          </div>
+          <strong>{data?.totalViews ?? '—'}</strong>
+          <small>最多保留 {data?.retentionDays ?? 90} 天</small>
+        </article>
+        <article className="metric">
+          <div>
+            <Users size={17} />
+            <span>累计 IP 数</span>
+          </div>
+          <strong>{data?.uniqueVisitors ?? '—'}</strong>
+          <small>同一 IP 可能对应多人</small>
+        </article>
+        <article className="metric">
+          <div>
+            <Activity size={17} />
+            <span>今日页面访问</span>
+          </div>
+          <strong>{data?.todayViews ?? '—'}</strong>
+          <small>以 UTC 日期统计</small>
+        </article>
+        <article className="metric">
+          <div>
+            <Users size={17} />
+            <span>今日 IP 数</span>
+          </div>
+          <strong>{data?.todayUniqueVisitors ?? '—'}</strong>
+          <small>按 IP 粗略去重</small>
+        </article>
+      </div>
+      <article className="panel">
+        <div className="panel-title">
+          <h3>
+            <Users size={17} />
+            最近访问
+          </h3>
+          <div className="visitor-panel-actions">
+            <span className="pill">完整 IP / 私有数据</span>
+            {confirmClear ? (
+              <>
+                <button className="secondary small" onClick={() => setConfirmClear(false)}>
+                  取消
+                </button>
+                <button className="danger small" onClick={() => void clearRecords()}>
+                  确认清空
+                </button>
+              </>
+            ) : (
+              <button className="secondary small" onClick={() => setConfirmClear(true)}>
+                清空记录
+              </button>
+            )}
+          </div>
+        </div>
+        {notice && (
+          <p className="message" role="status">
+            {notice}
+          </p>
+        )}
+        <p className="help">
+          展示最近 200 条记录。IP 属地为网络出口的大致位置，不能确认访问者的身份或个人精确位置。
+        </p>
+        {data?.records.length ? (
+          <div className="table-scroll">
+            <table className="visitor-table">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>IP 地址</th>
+                  <th>粗略属地 / 运营商</th>
+                  <th>页面</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.records.map((record) => (
+                  <tr key={record.id}>
+                    <td>{new Date(record.time).toLocaleString()}</td>
+                    <td className="visitor-ip">{record.ip}</td>
+                    <td>{record.location}</td>
+                    <td className="visitor-path">{record.path}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="empty">暂无已同意访客的记录。访客选择拒绝时不会被记录。</p>
+        )}
+      </article>
+      <div className="boundary">
+        <ShieldCheck size={20} />
+        <div>
+          <b>收集范围与隐私边界</b>
+          <p>
+            只收集同意后的主站页面访问；随机第一方标识仅用于撤回时删除关联记录，不抓取来源页面、浏览器指纹或表单内容。记录保存
+            90 天，管理台通过本机或 SSH 隧道访问。
           </p>
         </div>
       </div>
@@ -639,10 +799,11 @@ function Editor({
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const [tab, setTab] = useState<'content' | 'monitor'>('content')
+  const [tab, setTab] = useState<'content' | 'monitor' | 'visitors'>('content')
   const [items, setItems] = useState<Item[]>([])
   const [editor, setEditor] = useState<Document | null>(null)
   const [metrics, setMetrics] = useState<Metrics | null>(null)
+  const [visitorData, setVisitorData] = useState<VisitorData | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [dirty, setDirty] = useState(false)
@@ -661,6 +822,16 @@ function App() {
       setLoading(false)
     }
   }, [])
+  const refreshVisitors = useCallback(async () => {
+    setLoading(true)
+    try {
+      setVisitorData(await api<VisitorData>('visitors'))
+    } catch (error) {
+      setMessage((error as Error).message)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
   async function list() {
     try {
       setItems(await api<Item[]>('content'))
@@ -672,9 +843,12 @@ function App() {
     if (!authenticated) return
     void list()
     void refresh()
-    const timer = setInterval(() => void refresh(), 10_000)
+    const timer = setInterval(() => {
+      void refresh()
+      if (tab === 'visitors') void refreshVisitors()
+    }, 10_000)
     return () => clearInterval(timer)
-  }, [authenticated, refresh])
+  }, [authenticated, refresh, refreshVisitors, tab])
   useEffect(() => {
     const before = (event: BeforeUnloadEvent) => {
       if (dirty) {
@@ -757,6 +931,21 @@ function App() {
             资源监控
             <ChevronRight size={14} />
           </button>
+          <button
+            className={tab === 'visitors' ? 'active' : ''}
+            onClick={() => {
+              if (canLeave()) {
+                setTab('visitors')
+                setEditor(null)
+                setDirty(false)
+                void refreshVisitors()
+              }
+            }}
+          >
+            <Users size={18} />
+            访客记录
+            <ChevronRight size={14} />
+          </button>
           <a href={site} target="_blank" rel="noreferrer">
             <ArrowUpRight size={18} />
             打开公开站点
@@ -797,6 +986,12 @@ function App() {
             />
           ) : tab === 'monitor' ? (
             <Monitor metrics={metrics} loading={loading} refresh={() => void refresh()} />
+          ) : tab === 'visitors' ? (
+            <VisitorAnalytics
+              data={visitorData}
+              loading={loading}
+              refresh={() => void refreshVisitors()}
+            />
           ) : (
             <>
               <div className="section-title">

@@ -12,7 +12,7 @@
     "prepare": "husky",
     "typecheck": "tsc --noEmit",
     "admin": "node local-admin/server.mjs",
-    "test:admin": "node --test local-admin/admin.test.mjs",
+    "test:admin": "node --test local-admin/admin.test.mjs local-admin/visitors.test.mjs",
     "test:content": "node --test scripts/rss.test.mjs scripts/content.test.mjs"
   },
   "dependencies": {
@@ -29,6 +29,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-from-html-isomorphic": "^2.0.0",
     "image-size": "2.0.3",
+    "ip2region": "4.0.1",
     "lucide-react": "^1.66.0",
     "next": "15.5.28",
     "next-contentlayer2": "0.5.8",

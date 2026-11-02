@@ -7,6 +7,7 @@ import { build } from 'esbuild'
 import { imageSize } from 'image-size'
 import { createContentStore, assert, RequestError } from './content.mjs'
 import { createMonitor } from './monitor.mjs'
+import { createVisitorMonitor } from './visitors.mjs'
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const cookieName = 'stackfolio_admin'
@@ -46,6 +47,7 @@ export async function createAdminServer({
   }
   const store = createContentStore(root, stateDir)
   const monitor = createMonitor(root)
+  const visitors = createVisitorMonitor(stateDir)
   const sessions = new Map()
   let attempts = { count: 0, window: Date.now() }
   async function body(req) {
@@ -125,6 +127,14 @@ export async function createAdminServer({
         assert(authenticated, '请先登录个人管理台。', 401)
         if (url.pathname === '/api/metrics' && req.method === 'GET')
           return send(200, await monitor())
+        if (url.pathname === '/api/visitors' && req.method === 'GET')
+          return send(200, await visitors())
+        if (url.pathname === '/api/visitors' && req.method === 'DELETE') {
+          const data = await body(req)
+          assert(data.confirm === 'DELETE_VISIT_RECORDS', '清空确认无效。')
+          await visitors.clear()
+          return send(200, { cleared: true })
+        }
         if (url.pathname === '/api/content' && req.method === 'GET')
           return send(200, await store.list())
         if (url.pathname === '/api/document' && req.method === 'GET')
